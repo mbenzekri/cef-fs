@@ -1,2 +1,2 @@
 # cef-fs
-cef plugin  file system library for file/directory steps operations
+a cef (cloud engine factory) plugin  library providing file system steps for file/directory operations
