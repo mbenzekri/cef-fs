@@ -1,5 +1,4 @@
 import cef from 'cef-lib'
-import gdal from 'gdal'
 import path from 'path'
 import fs from 'fs'
 
