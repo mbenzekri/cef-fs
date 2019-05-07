@@ -25,13 +25,14 @@ const declaration = new cef.Declaration({
         },
         'extensions': {
             desc: 'list of comma separated extensions for file filtering',
-            type: 'string[]'
+            type: 'regexp'
         }
     },
     fields: [
         {
             key: 'directory',
             type: 'text',
+            defaultValue: '/var/data',
             templateOptions: {
                 label: 'Directory to walk',
                 required: true,
@@ -40,7 +41,7 @@ const declaration = new cef.Declaration({
         {
             key: 'pattern',
             type: 'text',
-            defaultValue: '.*',
+            defaultValue: '/.*/',
             templateOptions: {
                 label: 'regexp pattern filter',
                 required: true,
@@ -49,7 +50,7 @@ const declaration = new cef.Declaration({
         {
             key: 'extensions',
             type: 'text',
-            defaultValue: '*',
+            defaultValue: '/.*/',
             templateOptions: {
                 label: 'file extension list ',
                 required: true,
@@ -60,7 +61,10 @@ const declaration = new cef.Declaration({
 
 
 class DirectoryWalker extends cef.Step {
-
+    constructor (params, batch) {
+        super(new cef.Declaration(declaration), params, batch)
+    }
+    star
     /**
      * walk recursively a directory and output files mattching pattern and in extension list
      * @param {string} dir : the directory to walk
@@ -84,9 +88,12 @@ class DirectoryWalker extends cef.Step {
         const directory = this.params['directory']
         const pattern = this.params['pattern']
         const extensions = this.params['extensions']
+        this.open('files')
         this.walk(directory,pattern,extensions)
-        this.close('features')
+        this.close('files')
+    }
+    end() {
     }
 }
 
-export { declaration, DirectoryWalker }
+export function create (params, batch) { return new DirectoryWalker(params, batch) };
