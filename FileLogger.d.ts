@@ -1,6 +1,10 @@
 import * as cef from 'cef-lib/step';
+import * as fs from 'fs';
 export declare const declaration: cef.Declaration;
-declare class DirectoryWalker extends cef.Step {
+declare class FileLogger extends cef.Step {
+    streams: {
+        [key: string]: fs.WriteStream;
+    };
     constructor(params: cef.ParamsMap, batch: cef.Batch);
     /**
      * walk recursively a directory and output files mattching pattern and in extension list
@@ -8,9 +12,9 @@ declare class DirectoryWalker extends cef.Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter
      */
-    walk(dir: string, pattern: RegExp, extensions: RegExp): void;
     start(): void;
     end(): void;
+    input_features(feature: any): void;
 }
-export declare function create(params: cef.ParamsMap, batch: cef.Batch): DirectoryWalker;
+export declare function create(params: cef.ParamsMap, batch: cef.Batch): FileLogger;
 export {};

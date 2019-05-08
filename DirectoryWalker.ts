@@ -2,7 +2,7 @@ import * as cef from 'cef-lib/step'
 import * as path from 'path'
 import * as fs from 'fs'
 
-const declaration = new cef.Declaration({
+export const declaration = new cef.Declaration({
     gitid: 'DirectoryWalker@mbenzekri/cef-fs',
     title: 'Directory recursive parser',
     desc: 'Provide files from dir or subdir through a recursive walk',
@@ -16,15 +16,15 @@ const declaration = new cef.Declaration({
     parameters: {
         'directory': {
             desc: 'directory to walk',
-            type: cef.BaseType.string,
+            type: 'string',
         },
         'pattern': {
             desc: 'file pattern for file filtering',
-            type: cef.BaseType.regexp,
+            type: 'regexp',
         },
         'extensions': {
             desc: 'list of comma separated extensions for file filtering',
-            type: cef.BaseType.regexp,
+            type: 'regexp',
         }
     },
     fields: [
@@ -96,4 +96,4 @@ class DirectoryWalker extends cef.Step {
     }
 }
 
-export function create (params: cef.ParamsMap, batch: cef.Batch) { return new DirectoryWalker(params, batch) };
+export function  create(params: cef.ParamsMap, batch: cef.Batch) : DirectoryWalker  { return new DirectoryWalker(params, batch) };

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cef = require("cef-lib/step");
 const path = require("path");
 const fs = require("fs");
-const declaration = new cef.Declaration({
+exports.declaration = new cef.Declaration({
     gitid: 'DirectoryWalker@mbenzekri/cef-fs',
     title: 'Directory recursive parser',
     desc: 'Provide files from dir or subdir through a recursive walk',
@@ -16,15 +16,15 @@ const declaration = new cef.Declaration({
     parameters: {
         'directory': {
             desc: 'directory to walk',
-            type: cef.BaseType.string,
+            type: 'string',
         },
         'pattern': {
             desc: 'file pattern for file filtering',
-            type: cef.BaseType.regexp,
+            type: 'regexp',
         },
         'extensions': {
             desc: 'list of comma separated extensions for file filtering',
-            type: cef.BaseType.regexp,
+            type: 'regexp',
         }
     },
     fields: [
@@ -59,7 +59,7 @@ const declaration = new cef.Declaration({
 });
 class DirectoryWalker extends cef.Step {
     constructor(params, batch) {
-        super(declaration, params, batch);
+        super(exports.declaration, params, batch);
     }
     /**
      * walk recursively a directory and output files mattching pattern and in extension list
