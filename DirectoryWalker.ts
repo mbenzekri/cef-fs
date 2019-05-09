@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 
 export const declaration: cef.Declaration = {
-    gitid: 'DirectoryWalker@mbenzekri/cef-fs',
+    gitid: 'steps/DirectoryWalker@mbenzekri/cef-fs',
     title: 'Directory recursive parser',
     desc: 'Provide files from dir or subdir through a recursive walk',
     inputs: {

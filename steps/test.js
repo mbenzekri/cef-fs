@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cef = require("cef-lib/step");
 process.env.CEF_PATH = __dirname;
 const flowchart = {
-    name: 'Testing DirectoryWalker ',
-    title: 'Testing DirectoryWalker',
+    name: 'Testing DirectoryWatcher ',
+    title: 'Testing DirectoryWatcher',
     args: {},
     globals: {
         PATH: { value: 'D:/data', type: 'string', desc: 'the data root dir' }
@@ -13,7 +13,7 @@ const flowchart = {
     steps: [
         {
             id: 'a',
-            gitid: './DirectoryWalker@mbenzekri',
+            gitid: './DirectoryWatcher@mbenzekri',
             params: {
                 directory: '${globals.PATH}',
                 pattern: '.*',

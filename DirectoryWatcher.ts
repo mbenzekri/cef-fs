@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 
 export const declaration: cef.Declaration = {
-    gitid: 'DirectoryWatcher@mbenzekri/cef-fs',
+    gitid: 'steps/DirectoryWatcher@mbenzekri/cef-fs',
     title: 'Directory change watcher step',
     desc: 'emit a feature for each directory change',
     inputs: {

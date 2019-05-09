@@ -4,7 +4,7 @@ const cef = require("cef-lib/step");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {
-    gitid: 'DirectoryWalker@mbenzekri/cef-fs',
+    gitid: 'steps/DirectoryWalker@mbenzekri/cef-fs',
     title: 'Directory recursive parser',
     desc: 'Provide files from dir or subdir through a recursive walk',
     inputs: {},

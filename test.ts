@@ -3,8 +3,8 @@ import * as cef from 'cef-lib/step'
 process.env.CEF_PATH = __dirname
 
 const flowchart: cef.Flowchart = {
-    name: 'Testing DirectoryWalker ',
-    title: 'Testing DirectoryWalker',
+    name: 'Testing DirectoryWatcher ',
+    title: 'Testing DirectoryWatcher',
     args: {},
     globals: {
         PATH : { value: 'D:/data', type: 'string', desc: 'the data root dir' }
@@ -12,7 +12,7 @@ const flowchart: cef.Flowchart = {
     steps: [
         {
             id: 'a',
-            gitid: './DirectoryWalker@mbenzekri',
+            gitid: './DirectoryWatcher@mbenzekri',
             params: {
                 directory: '${globals.PATH}',
                 pattern: '.*',
