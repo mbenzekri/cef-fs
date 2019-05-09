@@ -62,8 +62,8 @@ exports.declaration = {
     ]
 };
 class FileLogger extends cef.Step {
-    constructor(params, batch) {
-        super(exports.declaration, params, batch);
+    constructor(params) {
+        super(exports.declaration, params);
         this.streams = {};
     }
     /**
@@ -126,7 +126,7 @@ class FileLogger extends cef.Step {
         return stream;
     }
 }
-function create(params, batch) { return new FileLogger(params, batch); }
+function create(params) { return new FileLogger(params); }
 exports.create = create;
 ;
 //# sourceMappingURL=FileLogger.js.map

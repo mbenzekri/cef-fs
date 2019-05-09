@@ -59,7 +59,7 @@ exports.declaration = {
 };
 class DirectoryWalker extends cef.Step {
     constructor(params, batch) {
-        super(exports.declaration, params, batch);
+        super(exports.declaration, params);
     }
     /**
      * walk recursively a directory and output files mattching pattern and in extension list

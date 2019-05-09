@@ -5,7 +5,7 @@ declare class FileLogger extends cef.Step {
     streams: {
         [key: string]: fs.WriteStream;
     };
-    constructor(params: cef.ParamsMap, batch: cef.Batch);
+    constructor(params: cef.ParamsMap);
     /**
      * walk recursively a directory and output files mattching pattern and in extension list
      * @param {string} dir : the directory to walk
@@ -21,5 +21,5 @@ declare class FileLogger extends cef.Step {
      */
     getstream(filename: string): fs.WriteStream;
 }
-export declare function create(params: cef.ParamsMap, batch: cef.Batch): FileLogger;
+export declare function create(params: cef.ParamsMap): FileLogger;
 export {};

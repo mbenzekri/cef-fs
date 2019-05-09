@@ -61,7 +61,7 @@ export const declaration: cef.Declaration = {
 
 class DirectoryWalker extends cef.Step {
     constructor (params: cef.ParamsMap, batch: cef.Batch) {
-        super(declaration, params, batch)
+        super(declaration, params)
     }
 
     /**

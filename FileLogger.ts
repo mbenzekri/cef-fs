@@ -64,8 +64,8 @@ export const declaration: cef.Declaration = {
 
 class FileLogger extends cef.Step {
     streams: { [key:string]: fs.WriteStream } = {}
-    constructor (params: cef.ParamsMap, batch: cef.Batch) {
-        super(declaration, params, batch)
+    constructor (params: cef.ParamsMap) {
+        super(declaration, params)
     }
 
     /**
@@ -126,4 +126,4 @@ class FileLogger extends cef.Step {
     }
 }
 
-export function  create(params: cef.ParamsMap, batch: cef.Batch) : FileLogger  { return new FileLogger(params, batch) };
+export function  create(params: cef.ParamsMap) : FileLogger  { return new FileLogger(params) };
