@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cef = require("cef-lib/step");
 const path = require("path");
 const fs = require("fs");
-exports.declaration = new cef.Declaration({
+exports.declaration = {
     gitid: 'FileLogger@mbenzekri/cef-fs',
     title: 'Feature file logger',
     desc: 'Logs inputed features to a file',
@@ -28,7 +28,7 @@ exports.declaration = new cef.Declaration({
         },
         'message': {
             desc: 'the message to be outputed for eache feature',
-            type: 'boolean',
+            type: 'string',
         },
     },
     fields: [
@@ -60,7 +60,7 @@ exports.declaration = new cef.Declaration({
             }
         },
     ]
-});
+};
 class FileLogger extends cef.Step {
     constructor(params, batch) {
         super(exports.declaration, params, batch);
@@ -96,24 +96,24 @@ class FileLogger extends cef.Step {
                 try {
                     // create vs append to the file 
                     const flags = append ? 'a' : 'w';
-                    this.streams[filename] = fs.createWriteStream(null, flags);
+                    this.streams[filename] = fs.createWriteStream(filename, { flags, encoding: 'utf8' });
                 }
                 catch (e) {
-                    this.log(`${this.decl.name}: unable to open file ${filename} due to => ${e.message}`);
+                    this.log(`${this.decl.gitid}: unable to open file ${filename} due to => ${e.message}`);
                 }
             }
             catch (e) {
-                this.log(`${this.decl.name}: unable to create directory  ${dir} due to => ${e.message}`);
+                this.log(`${this.decl.gitid}: unable to create directory  ${dir} due to => ${e.message}`);
             }
         }
         const stream = this.streams[filename];
-        try {
-            if (stream !== null)
-                stream.write(message, (err) => { });
-        }
-        catch (e) {
-            this.log(`${this.decl.name}: unable to write to file ${filename} due to => ${e.message}`);
-        }
+        if (stream !== null)
+            stream.write(message, (err) => {
+                err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
+            });
+        stream.write('\n', (err) => {
+            err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
+        });
     }
 }
 function create(params, batch) { return new FileLogger(params, batch); }

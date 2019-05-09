@@ -2,7 +2,7 @@ import * as cef from 'cef-lib/step'
 import * as path from 'path'
 import * as fs from 'fs'
 
-export const declaration = new cef.Declaration({
+export const declaration: cef.Declaration = {
     gitid: 'FileLogger@mbenzekri/cef-fs',
     title: 'Feature file logger',
     desc: 'Logs inputed features to a file',
@@ -28,7 +28,7 @@ export const declaration = new cef.Declaration({
         },
         'message': {
             desc: 'the message to be outputed for eache feature',
-            type: 'boolean',
+            type: 'string',
         },
     },
     fields: [
@@ -60,8 +60,7 @@ export const declaration = new cef.Declaration({
             }
         },
     ]
-})
-
+}
 
 class FileLogger extends cef.Step {
     streams: { [key:string]: fs.WriteStream } = {}
@@ -98,20 +97,21 @@ class FileLogger extends cef.Step {
                 try {
                     // create vs append to the file 
                     const flags = append ? 'a' : 'w'
-                    this.streams[filename] = fs.createWriteStream(null, flags) 
+                    this.streams[filename] = fs.createWriteStream(filename, {flags, encoding:'utf8'}) 
                 } catch(e) {
-                    this.log(`${this.decl.name}: unable to open file ${filename} due to => ${e.message}`)
+                    this.log(`${this.decl.gitid}: unable to open file ${filename} due to => ${e.message}`)
                 }
             } catch(e){
-                this.log(`${this.decl.name}: unable to create directory  ${dir} due to => ${e.message}`)
+                this.log(`${this.decl.gitid}: unable to create directory  ${dir} due to => ${e.message}`)
             }
         }
         const stream: fs.WriteStream = this.streams[filename]
-        try {
-            if (stream !== null) stream.write(message,(err) => {})
-        } catch(e) {
-            this.log(`${this.decl.name}: unable to write to file ${filename} due to => ${e.message}`)
-        }
+        if (stream !== null) stream.write(message,(err) => {
+            err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`)
+        })
+        stream.write('\n',(err) => {
+            err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`)
+        })
     }
 }
 

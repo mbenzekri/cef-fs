@@ -6,9 +6,9 @@ declare class DirectoryWalker extends cef.Step {
      * walk recursively a directory and output files mattching pattern and in extension list
      * @param {string} dir : the directory to walk
      * @param {RegExp} pattern : the pattern filter
-     * @param {RegExp} extensions : the extension list filter
+     * @param {RegExp} extension : the extension list filter
      */
-    walk(dir: string, pattern: RegExp, extensions: RegExp): void;
+    walk(dir: string, re_file: RegExp, re_ext: RegExp): void;
     start(): void;
     end(): void;
 }
