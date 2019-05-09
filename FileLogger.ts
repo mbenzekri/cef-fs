@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 
 export const declaration: cef.Declaration = {
-    gitid: 'FileLogger@mbenzekri/cef-fs',
+    gitid: 'mbenzekri/cef-fs/steps/FileLogger',
     title: 'Feature file logger',
     desc: 'Logs inputed features to a file',
     inputs: {

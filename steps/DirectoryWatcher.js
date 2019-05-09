@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cef = require("cef-lib/step");
 const fs = require("fs");
 exports.declaration = {
-    gitid: 'steps/DirectoryWatcher@mbenzekri/cef-fs',
+    gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
     title: 'Directory change watcher step',
     desc: 'emit a feature for each directory change',
     inputs: {},

@@ -4,7 +4,7 @@ const cef = require("cef-lib/step");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {
-    gitid: 'FileLogger@mbenzekri/cef-fs',
+    gitid: 'mbenzekri/cef-fs/steps/FileLogger',
     title: 'Feature file logger',
     desc: 'Logs inputed features to a file',
     inputs: {

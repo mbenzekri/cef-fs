@@ -12,7 +12,7 @@ const flowchart: cef.Flowchart = {
     steps: [
         {
             id: 'a',
-            gitid: './DirectoryWatcher@mbenzekri',
+            gitid: './DirectoryWatcher',
             params: {
                 directory: '${globals.PATH}',
                 pattern: '.*',
@@ -21,7 +21,7 @@ const flowchart: cef.Flowchart = {
         },
         {
             id: 'b',
-            gitid: './FileLogger@mbenzekri',
+            gitid: './FileLogger',
             params: {
                 filename: '${globals.PATH}/cef/filelogger.log',
                 append: 'false',
