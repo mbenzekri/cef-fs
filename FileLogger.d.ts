@@ -14,7 +14,12 @@ declare class FileLogger extends cef.Step {
      */
     start(): void;
     end(): void;
-    input_features(feature: any): void;
+    input_features(): void;
+    /**
+     * manage a pool of streams for multiple opened files for output
+     * @param filename filename to get writestrem
+     */
+    getstream(filename: string): fs.WriteStream;
 }
 export declare function create(params: cef.ParamsMap, batch: cef.Batch): FileLogger;
 export {};

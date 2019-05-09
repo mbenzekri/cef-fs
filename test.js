@@ -17,7 +17,7 @@ const flowchart = {
             params: {
                 directory: '${globals.PATH}',
                 pattern: '.*',
-                extension: '^(shp|SHP)$',
+                extension: '.*',
             },
         },
         {
@@ -27,7 +27,7 @@ const flowchart = {
                 filename: '${globals.PATH}/cef/filelogger.log',
                 append: 'false',
                 createdir: 'false',
-                message: '${JSON.stringify(feature)}',
+                message: '${feature.filename}',
             },
         },
     ],
