@@ -89,7 +89,6 @@ class DirectoryWatcher extends cef.Step {
                 const change = fs.existsSync(filename) ? 'create' : 'delete';
                 const feature = { filename, change };
                 this.output("files", feature);
-                console.log();
             }
         });
         this.close('files');

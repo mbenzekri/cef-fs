@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable no-template-curly-in-string */
 const cef = require("cef-lib/step");
-process.env.CEF_PATH = __dirname;
+process.env.CEF_PATH = 'D:/nodedev';
 const flowchart = {
     name: 'Testing DirectoryWatcher ',
     title: 'Testing DirectoryWatcher',
@@ -13,21 +13,22 @@ const flowchart = {
     steps: [
         {
             id: 'a',
-            gitid: './DirectoryWatcher',
+            gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
             params: {
                 directory: '${globals.PATH}',
+                created: 'true',
+                deleted: 'true',
                 pattern: '.*',
-                extension: '.*',
             },
         },
         {
             id: 'b',
-            gitid: './FileLogger',
+            gitid: 'mbenzekri/cef-fs/steps/FileLogger',
             params: {
                 filename: '${globals.PATH}/cef/filelogger.log',
                 append: 'false',
                 createdir: 'false',
-                message: '${feature.filename}',
+                message: '${JSON.stringify(feature)}',
             },
         },
     ],

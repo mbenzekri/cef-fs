@@ -1,6 +1,6 @@
 /* eslint-disable no-template-curly-in-string */
 import * as cef from 'cef-lib/step'
-process.env.CEF_PATH = __dirname
+process.env.CEF_PATH = 'D:/nodedev'
 
 const flowchart: cef.Flowchart = {
     name: 'Testing DirectoryWatcher ',
@@ -12,21 +12,22 @@ const flowchart: cef.Flowchart = {
     steps: [
         {
             id: 'a',
-            gitid: './DirectoryWatcher',
+            gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
             params: {
                 directory: '${globals.PATH}',
+                created: 'true',
+                deleted: 'true',
                 pattern: '.*',
-                extension: '.*',
             },
         },
         {
             id: 'b',
-            gitid: './FileLogger',
+            gitid: 'mbenzekri/cef-fs/steps/FileLogger',
             params: {
                 filename: '${globals.PATH}/cef/filelogger.log',
                 append: 'false',
                 createdir: 'false',
-                message: '${feature.filename}',
+                message: '${JSON.stringify(feature)}',
             },
         },
     ],
