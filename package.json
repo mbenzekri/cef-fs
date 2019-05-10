@@ -1,19 +1,21 @@
 {
-  "name": "cef-fs",
-  "version": "1.0.0",
-  "description": "a cef (cloud engine factory) plugin  library providing file system steps for file/directory operations",
-  "main": "index.js",
-  "scripts": {
-    "test": "test.js"
-  },
-  "author": "",
-  "license": "UNLICENSED",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mbenzekri/cef-fs.git"
-  },
-  "dependencies": {
-    "cef-lib": "github:mbenzekri/cef-lib"
-  },
-  "devDependencies": {}
+    "name": "cef-fs",
+    "version": "1.0.0",
+    "description": "a cef (cloud engine factory) plugin  library providing file system steps for file/directory operations",
+    "main": "index.js",
+    "scripts": {
+        "test": "test.js"
+    },
+    "author": "",
+    "license": "UNLICENSED",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mbenzekri/cef-fs.git"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {},
+    "peerDependencies": {
+        "cef-lib": "github:mbenzekri/cef-lib"
+    }
 }
