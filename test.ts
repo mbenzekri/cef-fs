@@ -1,6 +1,6 @@
 /* eslint-disable no-template-curly-in-string */
-import * as cef from 'cef-lib/step'
-process.env.CEF_PATH = 'D:/nodedev'
+import * as cef from 'cef-lib/steps/step'
+process.env.CEF_PATH = __dirname + '/../..'
 
 const flowchart: cef.Flowchart = {
     name: 'Testing DirectoryWatcher ',

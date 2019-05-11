@@ -1,5 +1,4 @@
-import * as cef from 'cef-lib/step'
-import * as path from 'path'
+import * as cef from 'cef-lib/steps/step'
 import * as fs from 'fs'
 
 export const declaration: cef.Declaration = {

@@ -1,4 +1,4 @@
-import * as cef from 'cef-lib/step';
+import * as cef from 'cef-lib/steps/step';
 import * as fs from 'fs';
 export declare const declaration: cef.Declaration;
 declare class FileLogger extends cef.Step {

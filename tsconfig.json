@@ -4,11 +4,8 @@
       "module": "commonjs",
       "outDir": "./steps",
       "declaration": true,
-      "sourceMap": true
+      "sourceMap": true,  
     },
-    "files": [
-      "./node_modules/@types/node/index.d.ts"
-    ],
     "include": [
       "./*.ts"
     ],

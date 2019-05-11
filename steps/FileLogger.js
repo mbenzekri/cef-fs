@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const cef = require("cef-lib/step");
+const cef = require("cef-lib/steps/step");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {

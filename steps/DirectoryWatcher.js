@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const cef = require("cef-lib/step");
+const cef = require("cef-lib/steps/step");
 const fs = require("fs");
 exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
