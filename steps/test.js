@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable no-template-curly-in-string */
-const cef = require("cef-lib/steps/step");
-process.env.CEF_PATH = __dirname + '/../..';
+const cef = require("cef-lib");
 const flowchart = {
     name: 'Testing DirectoryWatcher ',
     title: 'Testing DirectoryWatcher',

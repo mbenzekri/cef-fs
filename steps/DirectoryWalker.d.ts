@@ -1,4 +1,4 @@
-import * as cef from 'cef-lib/steps/step';
+import * as cef from 'cef-lib';
 export declare const declaration: cef.Declaration;
 declare class DirectoryWalker extends cef.Step {
     constructor(params: cef.ParamsMap, batch: cef.Batch);

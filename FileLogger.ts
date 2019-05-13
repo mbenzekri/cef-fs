@@ -1,4 +1,4 @@
-import * as cef from 'cef-lib/steps/step'
+import * as cef from 'cef-lib'
 import * as path from 'path'
 import * as fs from 'fs'
 

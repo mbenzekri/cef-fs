@@ -1,4 +1,4 @@
-import * as cef from 'cef-lib/steps/step';
+import * as cef from 'cef-lib';
 import * as fs from 'fs';
 export declare const declaration: cef.Declaration;
 declare class DirectoryWatcher extends cef.Step {

@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const cef = require("cef-lib/steps/step");
+const cef = require("cef-lib");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {
