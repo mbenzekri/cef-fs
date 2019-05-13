@@ -12,8 +12,7 @@
         "type": "git",
         "url": "git+https://github.com/mbenzekri/cef-fs.git"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
         "cef-lib": "github:mbenzekri/cef-lib"
