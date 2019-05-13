@@ -4,11 +4,11 @@ import * as fs from 'fs'
 
 export const declaration: cef.Declaration = {
     gitid: 'mbenzekri/cef-fs/steps/FileLogger',
-    title: 'Feature file logger',
-    desc: 'Logs inputed features to a file',
+    title: 'Pojo file logger',
+    desc: 'Logs inputed pojos to a file',
     inputs: {
-        'features': {
-            desc: 'features to be logged'
+        'pojos': {
+            desc: 'pojos to be logged'
         }
     },
     outputs: {
@@ -27,7 +27,7 @@ export const declaration: cef.Declaration = {
             type: 'boolean',
         },
         'message': {
-            desc: 'the message to be outputed for eache feature',
+            desc: 'the message to be outputed for each pojo',
             type: 'string',
         },
     },
@@ -53,7 +53,7 @@ export const declaration: cef.Declaration = {
         {
             key: 'message',
             type: 'text',
-            defaultValue: '${JSON.stringify(feature)}',
+            defaultValue: '${JSON.stringify(pojo)}',
             templateOptions: {
                 label: 'message to log',
                 required: true,
@@ -75,25 +75,27 @@ class FileLogger extends cef.Step {
      * @param {RegExp} extensions : the extension list filter 
      */
    
-    start() {
-    }
-    end() {  
+    async end() {  
         Object.keys(this.streams).forEach(filename => {
             const stream = this.streams[filename] 
             if (stream) stream.close()
         })
     }
-    input_features() {
-        const filename = this.params.filename
-        const message = this.params.message
-        const stream: fs.WriteStream = this.getstream(filename)
-        if (stream !== null) {
-            stream.write(message,(err) => {
-                err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`)
-            })
-            stream.write('\n',(err) => {
-                err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`)
-            })
+    async doit() {
+        let pojo = await this.input('pojos') 
+        while (pojo !== cef.EOF) {
+            const filename = this.params.filename
+            const message = this.params.message
+            const stream = this.getstream(filename)
+            if (stream !== null) {
+                stream.write(message,(err) => {
+                    err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`)
+                })
+                stream.write('\n',(err) => {
+                    err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`)
+                })
+            }
+            pojo = await this.input('pojos') 
         }
     }
     /**

@@ -1,11 +1,19 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const cef = require("cef-lib/steps/step");
 const fs = require("fs");
 exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
     title: 'Directory change watcher step',
-    desc: 'emit a feature for each directory change',
+    desc: 'emit a pojo for each directory change',
     inputs: {},
     outputs: {
         'files': {
@@ -80,20 +88,24 @@ class DirectoryWatcher extends cef.Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter
      */
-    start() {
-        this.open('files');
-        const directory = this.params.directory;
-        fs.watch(directory, (event, who) => {
-            if (event === 'rename') {
-                const filename = `${directory}/${who}`;
-                const change = fs.existsSync(filename) ? 'create' : 'delete';
-                const feature = { filename, change };
-                this.output("files", feature);
-            }
+    doit() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const directory = this.params.directory;
+            process.on('SIGINT', () => {
+                console.log("!!! Caught interrupt signal");
+                process.exit();
+            });
+            return new Promise(() => {
+                fs.watch(directory, (event, who) => {
+                    if (event === 'rename') {
+                        const filename = `${directory}/${who}`;
+                        const change = fs.existsSync(filename) ? 'create' : 'delete';
+                        const pojo = { filename, change };
+                        this.output("files", pojo);
+                    }
+                });
+            });
         });
-        this.close('files');
-    }
-    end() {
     }
 }
 function create(params) { return new DirectoryWatcher(params); }

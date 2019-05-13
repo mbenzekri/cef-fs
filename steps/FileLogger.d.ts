@@ -12,9 +12,8 @@ declare class FileLogger extends cef.Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter
      */
-    start(): void;
-    end(): void;
-    input_features(): void;
+    end(): Promise<void>;
+    doit(): Promise<void>;
     /**
      * manage a pool of streams for multiple opened files for output
      * @param filename filename to get writestrem

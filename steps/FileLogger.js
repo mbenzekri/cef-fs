@@ -1,15 +1,23 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const cef = require("cef-lib/steps/step");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/FileLogger',
-    title: 'Feature file logger',
-    desc: 'Logs inputed features to a file',
+    title: 'Pojo file logger',
+    desc: 'Logs inputed pojos to a file',
     inputs: {
-        'features': {
-            desc: 'features to be logged'
+        'pojos': {
+            desc: 'pojos to be logged'
         }
     },
     outputs: {},
@@ -27,7 +35,7 @@ exports.declaration = {
             type: 'boolean',
         },
         'message': {
-            desc: 'the message to be outputed for eache feature',
+            desc: 'the message to be outputed for each pojo',
             type: 'string',
         },
     },
@@ -53,7 +61,7 @@ exports.declaration = {
         {
             key: 'message',
             type: 'text',
-            defaultValue: '${JSON.stringify(feature)}',
+            defaultValue: '${JSON.stringify(pojo)}',
             templateOptions: {
                 label: 'message to log',
                 required: true,
@@ -72,27 +80,33 @@ class FileLogger extends cef.Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter
      */
-    start() {
-    }
     end() {
-        Object.keys(this.streams).forEach(filename => {
-            const stream = this.streams[filename];
-            if (stream)
-                stream.close();
+        return __awaiter(this, void 0, void 0, function* () {
+            Object.keys(this.streams).forEach(filename => {
+                const stream = this.streams[filename];
+                if (stream)
+                    stream.close();
+            });
         });
     }
-    input_features() {
-        const filename = this.params.filename;
-        const message = this.params.message;
-        const stream = this.getstream(filename);
-        if (stream !== null) {
-            stream.write(message, (err) => {
-                err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
-            });
-            stream.write('\n', (err) => {
-                err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
-            });
-        }
+    doit() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let pojo = yield this.input('pojos');
+            while (pojo !== cef.EOF) {
+                const filename = this.params.filename;
+                const message = this.params.message;
+                const stream = this.getstream(filename);
+                if (stream !== null) {
+                    stream.write(message, (err) => {
+                        err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
+                    });
+                    stream.write('\n', (err) => {
+                        err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
+                    });
+                }
+                pojo = yield this.input('pojos');
+            }
+        });
     }
     /**
      * manage a pool of streams for multiple opened files for output

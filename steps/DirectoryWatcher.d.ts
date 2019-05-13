@@ -12,8 +12,7 @@ declare class DirectoryWatcher extends cef.Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter
      */
-    start(): void;
-    end(): void;
+    doit(): Promise<{}>;
 }
 export declare function create(params: cef.ParamsMap): DirectoryWatcher;
 export {};

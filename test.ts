@@ -27,12 +27,12 @@ const flowchart: cef.Flowchart = {
                 filename: '${globals.PATH}/cef/filelogger.log',
                 append: 'false',
                 createdir: 'false',
-                message: '${JSON.stringify(feature)}',
+                message: '${JSON.stringify(pojo)}',
             },
         },
     ],
     pipes: [
-        { from: 'a', outport:'files', to: 'b', inport: 'features' }
+        { from: 'a', outport:'files', to: 'b', inport: 'pojos' }
     ]
 }
 

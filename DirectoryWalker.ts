@@ -83,16 +83,18 @@ class DirectoryWalker extends cef.Step {
                 }
             }
         });
-    }    
-    start() {
-        const directory = this.params['directory']
-        const pattern = this.params['pattern']
-        const extension = this.params['extension']
-        this.open('files')
-        this.walk(directory,pattern,extension)
-        this.close('files')
     }
-    end() {
+    async start() {
+    }
+
+    
+    async doit() {
+        return new Promise( (resolve,reject) => {
+            const directory = this.params['directory']
+            const pattern = this.params['pattern']
+            const extension = this.params['extension']
+            this.walk(directory,pattern,extension)
+        })
     }
 }
 

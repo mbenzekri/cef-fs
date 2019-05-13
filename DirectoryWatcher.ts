@@ -4,7 +4,7 @@ import * as fs from 'fs'
 export const declaration: cef.Declaration = {
     gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
     title: 'Directory change watcher step',
-    desc: 'emit a feature for each directory change',
+    desc: 'emit a pojo for each directory change',
     inputs: {
     },
     outputs: {
@@ -83,20 +83,23 @@ class DirectoryWatcher extends cef.Step {
      * @param {RegExp} extensions : the extension list filter 
      */
    
-    start() {
-        this.open('files')
+    async doit() {
         const directory = this.params.directory
-        fs.watch(directory, (event: string, who: any) => {
-            if (event === 'rename') {
-                const filename = `${directory}/${who}`
-                const change = fs.existsSync(filename) ? 'create' :'delete'
-                const feature = {filename,change}
-                this.output("files", feature) 
-            }
+        process.on('SIGINT', () => {
+            console.log("!!! Caught interrupt signal");
+            process.exit();
+        });
+
+        return new Promise( () => {
+            fs.watch(directory, (event: string, who: any) => {
+                if (event === 'rename') {
+                    const filename = `${directory}/${who}`
+                    const change = fs.existsSync(filename) ? 'create' :'delete'
+                    const pojo = {filename,change}
+                    this.output("files", pojo) 
+                }
+            })    
         })
-        this.close('files')
-    }
-    end() {
     }
 }
 

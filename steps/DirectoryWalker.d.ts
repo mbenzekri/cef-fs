@@ -9,8 +9,8 @@ declare class DirectoryWalker extends cef.Step {
      * @param {RegExp} extension : the extension list filter
      */
     walk(dir: string, re_file: RegExp, re_ext: RegExp): void;
-    start(): void;
-    end(): void;
+    start(): Promise<void>;
+    doit(): Promise<{}>;
 }
 export declare function create(params: cef.ParamsMap, batch: cef.Batch): DirectoryWalker;
 export {};
