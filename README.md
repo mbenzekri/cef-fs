@@ -3,10 +3,10 @@
     to install: `npm install mbenzekri/cef-fs`
 
 # summary
-    - step [DirectoryWalker](##DirectoryWalker) : Directory recursive parser
-    - step [DirectoryWatcher](##DirectoryWatcher) : Directory change watcher step
+    - step [DirectoryWalker](#directorywatcher) : Directory recursive parser
+    - step [DirectoryWatcher](#directorywatcher) : Directory change watcher step
 ---
-# DirectoryWalker
+# DirectoryWatcher
     Directory recursive parser
 
 ## goal
@@ -21,7 +21,7 @@
 ## inputs
 
 ## outputs
-    - input **files** : output found filenames 
+    - output __files__ : output found filenames 
 # DirectoryWatcher
     Directory change watcher step
 
@@ -38,4 +38,4 @@
 ## inputs
 
 ## outputs
-    - input **files** : changed files 
+    - output __files__ : changed files 
