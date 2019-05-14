@@ -1,5 +1,5 @@
 # cef-fs
-    a cef (cloud engine factory) plugin  library providing file system steps for file/directory operations
+    a cef (**cloud engine factory**) plugin  library providing file system steps for file/directory operations
     to install: `npm install mbenzekri/cef-fs`
 
 # summary
@@ -38,4 +38,4 @@
 ## inputs
 
 ## outputs
-    - output __files__ : changed files 
+    - output **files** : changed files 
