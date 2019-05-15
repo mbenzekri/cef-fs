@@ -22,6 +22,7 @@
 ---
 ## parameters
 > **directory**: *{string}* -- directory pathname to walk [default = `c:/tmp`]
+>
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
