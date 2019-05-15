@@ -1,5 +1,5 @@
 # cef-fs
->a cef (**cloud engine factory**) plugin  library providing file system steps for file/directory operations
+>a cef plugin library (**pojo engine factory**)providing **file system steps** for file/directory operations
 >to install: `npm install mbenzekri/cef-fs`
 
 # summary
