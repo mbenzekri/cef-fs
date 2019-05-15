@@ -1,16 +1,14 @@
-# Pojo engine library: cef-fs
->a pojo engine steps library providing file system operations
-
+# cef-fs : a pojo engine library providing file system steps
 # install
 
 >`npm install mbenzekri/cef-fs`
 
-# summary
->- step [DirectoryWalker](#step-directorywalker) : Directory tree recursive walk and output
->- step [DirectoryWatcher](#step-directorywatcher) : Directory change watcher step
->- step [FileLogger](#step-filelogger) : Pojo file logger
+# included steps 
+>- [DirectoryWalker](#directorywalker) : Directory tree recursive walk and output
+>- [DirectoryWatcher](#directorywatcher) : Directory change watcher step
+>- [FileLogger](#filelogger) : Pojo file logger
 ---
-# step DirectoryWalker : Directory tree recursive walk and output
+# DirectoryWalker : Directory tree recursive walk and output
 >
 
 ## goal
@@ -23,7 +21,7 @@
 
 ---
 ## parameters
-### **directory**: *{string}* -- directory pathname to walk [default = `c:/tmp`]
+> **directory**: *{string}* -- directory pathname to walk [default = `c:/tmp`]
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
@@ -31,16 +29,20 @@
 >|`${globs.my_glob_name}`| use a step global variable to set directory |
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
 >|`${pojo.dirname}`| use an inputed pojo property "dirname" from port "files |
-### **pattern**: *{regexp}* -- full pathname regexp filter [default = `.*`]
+
+> **pattern**: *{regexp}* -- full pathname regexp filter [default = `.*`]
 >| Value | Description | 
 >|-------|-------------| 
 >|`.*`| select all files/directory |
 >|`[.](doc|pdf)$`| doc and pdf files |
 >|`^d:`| only starting with "d:" |
 >|`^${args.root}/`| only starting with process argument "root" |
-### **recursive**: *{boolean}* -- if true do a recursive walk [default = `false`]
-### **outdirs**: *{boolean}* -- if true output directories [default = `true`]
-### **outfiles**: *{boolean}* -- if true output filtes [default = `true`]
+
+> **recursive**: *{boolean}* -- if true do a recursive walk [default = `false`]
+
+> **outdirs**: *{boolean}* -- if true output directories [default = `true`]
+
+> **outfiles**: *{boolean}* -- if true output filtes [default = `true`]
 
 
 ## outputs
@@ -48,7 +50,7 @@
 
 ---
 
-# step DirectoryWatcher : Directory change watcher step
+# DirectoryWatcher : Directory change watcher step
 >
 
 ## goal
@@ -60,22 +62,25 @@
 
 ---
 ## parameters
-### **directory**: *{string}* -- the directory to watch for changes [default = `c:/tmp`]
+> **directory**: *{string}* -- the directory to watch for changes [default = `c:/tmp`]
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
 >|`${args.my_param_name}`| use a process parameter to set directory |
 >|`${globs.my_glob_name}`| use a step global variable to set directory |
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
-### **pattern**: *{regexp}* -- full pathname regexp filter [default = `.*`]
+
+> **pattern**: *{regexp}* -- full pathname regexp filter [default = `.*`]
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
 >|`${args.my_param_name}`| use a process parameter to set directory |
 >|`${globs.my_glob_name}`| use a step global variable to set directory |
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
-### **created**: *{boolean}* -- if true output created files [default = `true`]
-### **deleted**: *{boolean}* -- if true output deleted files  [default = `c:	mps`]
+
+> **created**: *{boolean}* -- if true output created files [default = `true`]
+
+> **deleted**: *{boolean}* -- if true output deleted files  [default = `c:	mps`]
 
 
 ## outputs
@@ -83,7 +88,7 @@
 
 ---
 
-# step FileLogger : Pojo file logger
+# FileLogger : Pojo file logger
 >
 
 ## goal
@@ -95,12 +100,17 @@
 
 ---
 ## parameters
-### **filename**: *{string}* -- the log file name full path and name [default = `c:	mpmylogfile.log`]
-### **createdir**: *{boolean}* -- if true create the absent directories [default = `true`]
-### **append**: *{boolean}* -- if true and file exists append  [default = `true`]
-### **message**: *{string}* -- the message to be outputed for each pojo [default = `${JSON.stringify(pojo)}`]
-### **header**: *{string}* -- text to log into the file before pojo outputing [default = `null`]
-### **footer**: *{string}* -- text to log into the file after all pojos outputed [default = `null`]
+> **filename**: *{string}* -- the log file name full path and name [default = `c:	mpmylogfile.log`]
+
+> **createdir**: *{boolean}* -- if true create the absent directories [default = `true`]
+
+> **append**: *{boolean}* -- if true and file exists append  [default = `true`]
+
+> **message**: *{string}* -- the message to be outputed for each pojo [default = `${JSON.stringify(pojo)}`]
+
+> **header**: *{string}* -- text to log into the file before pojo outputing [default = `null`]
+
+> **footer**: *{string}* -- text to log into the file after all pojos outputed [default = `null`]
 
 ## inputs
 >- **pojos** -- pojos to be logged 
