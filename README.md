@@ -14,9 +14,9 @@
 >Provide files from dir or subdir through a recursive walk
 
 ## parameters
->- directory {string} directory to walk 
->- pattern {regexp} regexp for file filtering by full pathname 
->- extension {regexp} regexp for file filtering by extension 
+>- **directory** {string} directory to walk 
+>- **pattern** {regexp} regexp for file filtering by full pathname 
+>- **extension** {regexp} regexp for file filtering by extension 
 
 ## inputs
 
@@ -30,10 +30,10 @@
 >emit a pojo for each directory change
 
 ## parameters
->- directory {string} the directory to watch for changes 
->- created {boolean} if true output created files 
->- deleted {boolean} if true output deleted files  
->- pattern {regexp} base filename.ext pattern filter 
+>- **directory {string} the directory to watch for changes 
+>- **created** {boolean} if true output created files 
+>- **deleted** {boolean} if true output deleted files  
+>- **pattern** {regexp} base filename.ext pattern filter 
 
 ## inputs
 
