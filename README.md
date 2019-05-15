@@ -14,9 +14,9 @@
 >Provide files from dir or subdir through a recursive walk
 
 ## parameters
->- **<u>directory</u> <i>{string}</i>** directory to walk 
->- **<u>pattern</u> <i>{regexp}</i>** regexp for file filtering by full pathname 
->- **<u>extension</u> <i>{regexp}</i>** regexp for file filtering by extension 
+>- **<span style="text-decorarion:underline">directory</span> <i>{string}</i>** directory to walk 
+>- **<span style="text-decorarion:underline">pattern</span> <i>{regexp}</i>** regexp for file filtering by full pathname 
+>- **<span style="text-decorarion:underline">extension</span> <i>{regexp}</i>** regexp for file filtering by extension 
 
 ## inputs
 
