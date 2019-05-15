@@ -1,10 +1,10 @@
 # cef-fs
-    a cef (**cloud engine factory**) plugin  library providing file system steps for file/directory operations
-    to install: `npm install mbenzekri/cef-fs`
+>a cef (**cloud engine factory**) plugin  library providing file system steps for file/directory operations
+>to install: `npm install mbenzekri/cef-fs`
 
 # summary
-    - step [DirectoryWalker](#directorywatcher) : Directory recursive parser
-    - step [DirectoryWatcher](#directorywatcher) : Directory change watcher step
+>>- step [DirectoryWalker](#directorywatcher) : Directory recursive parser
+>>- step [DirectoryWatcher](#directorywatcher) : Directory change watcher step
 ---
 # DirectoryWatcher
     Directory recursive parser
