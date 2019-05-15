@@ -3,20 +3,20 @@
 >to install: `npm install mbenzekri/cef-fs`
 
 # summary
->>- step [DirectoryWalker](#directorywatcher) : Directory recursive parser
->>- step [DirectoryWatcher](#directorywatcher) : Directory change watcher step
+>- step [DirectoryWalker](#directorywalker) : Directory recursive parser
+>- step [DirectoryWatcher](#directorywatcher) : Directory change watcher step
 ---
-# DirectoryWatcher
-    Directory recursive parser
+# DirectoryWalker
+>Directory recursive parser
 
 ## goal
 
-    Provide files from dir or subdir through a recursive walk
+>Provide files from dir or subdir through a recursive walk
 
 ## parameters
-        - directory {string} directory to walk 
-        - pattern {regexp} regexp for file filtering by full pathname 
-        - extension {regexp} regexp for file filtering by extension 
+>- directory {string} directory to walk 
+>- pattern {regexp} regexp for file filtering by full pathname 
+>- extension {regexp} regexp for file filtering by extension 
 
 ## inputs
 
