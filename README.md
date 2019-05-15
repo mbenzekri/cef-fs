@@ -32,7 +32,7 @@
 >emit a pojo for each directory change
 
 ## parameters
->- **directory {string} the directory to watch for changes 
+>- **directory** {string} the directory to watch for changes 
 >- **created** {boolean} if true output created files 
 >- **deleted** {boolean} if true output deleted files  
 >- **pattern** {regexp} base filename.ext pattern filter 
