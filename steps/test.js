@@ -12,7 +12,7 @@ const flowchart = {
     steps: [
         {
             id: 'a',
-            gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
+            gitid: 'mbenzekri/cef-fs/steps/DirectoryWalker',
             params: {
                 directory: '${globals.PATH}',
                 created: 'true',

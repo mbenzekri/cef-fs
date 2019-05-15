@@ -1,11 +1,16 @@
 {
     "name": "cef-fs",
     "version": "1.0.0",
-    "description": "a cef (cloud engine factory) plugin  library providing file system steps for file/directory operations",
-    "main": "index.js",
+    "description": "a pojo engine steps library providing file system operations",
+    "main": "./steps/tests.js",
+    "config": {
+        "steps": ""
+    },
     "scripts": {
+        "build": "tsc",
         "start": "node ./steps/test.js",
-        "doc": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher"
+        "doc": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher FileLogger",
+        "test": "node ./steps/test.js"
     },
     "author": "",
     "license": "UNLICENSED",

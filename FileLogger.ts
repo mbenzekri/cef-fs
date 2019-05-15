@@ -5,61 +5,58 @@ import * as fs from 'fs'
 export const declaration: cef.Declaration = {
     gitid: 'mbenzekri/cef-fs/steps/FileLogger',
     title: 'Pojo file logger',
-    desc: 'Logs inputed pojos to a file',
+    desc: 'Logs inputed pojos data to a file',
+    features: [
+        "allow writing data for each pojo inputed",
+        "allow creation dir if not present",
+        "allow append mode",
+    ],
     inputs: {
         'pojos': {
             desc: 'pojos to be logged'
         }
     },
     outputs: {
+        'files': {
+            desc: 'files produced',
+            /*
+            properties: [
+                {}
+            ]*/
+        }
     },
     parameters: {
         'filename': {
             desc: 'the log file name full path and name',
             type: 'string',
+            default: 'c:\tmp\mylogfile.log'
         },
         'createdir': {
             desc: 'if true create the absent directories',
-            type: 'true',
+            type: 'boolean',
+            default: 'true',
         },
         'append': {
             desc: 'if true and file exists append ',
             type: 'boolean',
+            default: 'true',
         },
         'message': {
             desc: 'the message to be outputed for each pojo',
             type: 'string',
+            default: '${JSON.stringify(pojo)}',
         },
-    },
-    fields: [
-        {
-            key: 'filename',
-            type: 'text',
-            defaultValue: '/var/data',
-            templateOptions: {
-                label: 'Log filename',
-                required: true,
-            }
+        'header': {
+            desc: 'text to log into the file before pojo outputing',
+            type: 'string',
+            default: null
         },
-        {
-            key: 'createdir',
-            type: 'text',
-            defaultValue: false,
-            templateOptions: {
-                label: 'create dirs ?',
-                required: true,
-            }
+        'footer': {
+            desc: 'text to log into the file after all pojos outputed',
+            type: 'string',
+            default: null
         },
-        {
-            key: 'message',
-            type: 'text',
-            defaultValue: '${JSON.stringify(pojo)}',
-            templateOptions: {
-                label: 'message to log',
-                required: true,
-            }
-        },
-    ]
+    }
 }
 
 class FileLogger extends cef.Step {

@@ -14,6 +14,11 @@ exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
     title: 'Directory change watcher step',
     desc: 'emit a pojo for each directory change',
+    features: [
+        "allow directory change watching ",
+        "allow regexp filtering for full pathname directories/files",
+        "allow change type filtering (create and/or deleted",
+    ],
     inputs: {},
     outputs: {
         'files': {
@@ -24,58 +29,36 @@ exports.declaration = {
         'directory': {
             desc: 'the directory to watch for changes',
             type: 'string',
+            default: 'c:/tmp',
+            examples: [
+                { value: 'c:/tmp', desc: 'set parameter directory to a constant' },
+                { value: '$\{args.my_param_name}', desc: 'use a process parameter to set directory' },
+                { value: '$\{globs.my_glob_name}', desc: 'use a step global variable to set directory' },
+                { value: '$\{args.root}/$\{globs.prefix}_suffix}', desc: 'use mixed variables' },
+            ]
+        },
+        'pattern': {
+            desc: 'full pathname regexp filter',
+            type: 'regexp',
+            default: '.*',
+            examples: [
+                { value: 'c:/tmp', desc: 'set parameter directory to a constant' },
+                { value: '$\{args.my_param_name}', desc: 'use a process parameter to set directory' },
+                { value: '$\{globs.my_glob_name}', desc: 'use a step global variable to set directory' },
+                { value: '$\{args.root}/$\{globs.prefix}_suffix}', desc: 'use mixed variables' },
+            ]
         },
         'created': {
             desc: 'if true output created files',
             type: 'boolean',
+            default: 'true',
         },
         'deleted': {
             desc: 'if true output deleted files ',
             type: 'boolean',
+            default: 'c:\tmps',
         },
-        'pattern': {
-            desc: 'base filename.ext pattern filter',
-            type: 'regexp',
-        },
-    },
-    fields: [
-        {
-            key: 'directory',
-            type: 'text',
-            defaultValue: '/var/data',
-            templateOptions: {
-                label: 'directory to watch',
-                required: true,
-            }
-        },
-        {
-            key: 'created',
-            type: 'text',
-            defaultValue: true,
-            templateOptions: {
-                label: 'created files ?',
-                required: true,
-            }
-        },
-        {
-            key: 'deleted',
-            type: 'text',
-            defaultValue: true,
-            templateOptions: {
-                label: 'deleted files',
-                required: true,
-            }
-        },
-        {
-            key: 'pattern',
-            type: 'text',
-            defaultValue: '.*',
-            templateOptions: {
-                label: 'pattern filter',
-                required: true,
-            }
-        },
-    ]
+    }
 };
 class DirectoryWatcher extends cef.Step {
     constructor(params) {
@@ -99,9 +82,18 @@ class DirectoryWatcher extends cef.Step {
                 fs.watch(directory, (event, who) => {
                     if (event === 'rename') {
                         const filename = `${directory}/${who}`;
-                        const change = fs.existsSync(filename) ? 'create' : 'delete';
-                        const pojo = { filename, change };
-                        this.output("files", pojo);
+                        const exists = fs.existsSync(filename);
+                        const change = exists ? 'create' : 'delete';
+                        const stat = fs.statSync(filename);
+                        const isdir = stat.isDirectory;
+                        const isfile = stat.isFile;
+                        const pojo = { filename, change, isdir, isfile };
+                        if (this.params.pattern.test(filename)) {
+                            if (this.params.created && exists)
+                                this.output("files", pojo);
+                            if (this.params.deleted && !exists)
+                                this.output("files", pojo);
+                        }
                     }
                 });
             });

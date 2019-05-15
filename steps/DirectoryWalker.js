@@ -13,8 +13,14 @@ const path = require("path");
 const fs = require("fs");
 exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/DirectoryWalker',
-    title: 'Directory recursive parser',
-    desc: 'Provide files from dir or subdir through a recursive walk',
+    title: 'Directory tree recursive walk and output',
+    desc: 'This step does a tree recursive walk and outputs every directories or files found',
+    features: [
+        "allow directory tree walking ",
+        "allow recursive or flat walk",
+        "allow type file/directory filter",
+        "allow regexp filtering for full pathname directories/files",
+    ],
     inputs: {},
     outputs: {
         'files': {
@@ -23,47 +29,44 @@ exports.declaration = {
     },
     parameters: {
         'directory': {
-            desc: 'directory to walk',
+            desc: 'directory pathname to walk',
             type: 'string',
+            default: 'c:/tmp',
+            examples: [
+                { value: 'c:/tmp', desc: 'set parameter directory to a constant' },
+                { value: '$\{args.my_param_name}', desc: 'use a process parameter to set directory' },
+                { value: '$\{globs.my_glob_name}', desc: 'use a step global variable to set directory' },
+                { value: '$\{args.root}/$\{globs.prefix}_suffix}', desc: 'use mixed variables' },
+                { value: '$\{pojo.dirname}', desc: 'use an inputed pojo property "dirname" from port "files' },
+            ]
         },
         'pattern': {
-            desc: 'regexp for file filtering by full pathname',
+            desc: 'full pathname regexp filter',
             type: 'regexp',
+            default: '.*',
+            examples: [
+                { value: '.*', desc: 'select all files/directory' },
+                { value: '[.](doc|pdf)$', desc: 'doc and pdf files' },
+                { value: '^d:', desc: 'only starting with "d:"' },
+                { value: '^${args.root}/', desc: 'only starting with process argument "root"' },
+            ]
         },
-        'extension': {
-            desc: 'regexp for file filtering by extension',
-            type: 'regexp',
+        'recursive': {
+            desc: 'if true do a recursive walk',
+            type: 'boolean',
+            default: 'false',
+        },
+        'outdirs': {
+            desc: 'if true output directories',
+            type: 'boolean',
+            default: 'true',
+        },
+        'outfiles': {
+            desc: 'if true output filtes',
+            type: 'boolean',
+            default: 'true',
         }
-    },
-    fields: [
-        {
-            key: 'directory',
-            type: 'text',
-            defaultValue: '/var/data',
-            templateOptions: {
-                label: 'Directory to walk',
-                required: true,
-            }
-        },
-        {
-            key: 'pattern',
-            type: 'text',
-            defaultValue: '/.*/',
-            templateOptions: {
-                label: 'file path/name regexp filter',
-                required: true,
-            }
-        },
-        {
-            key: 'extension',
-            type: 'text',
-            defaultValue: '/.*/',
-            templateOptions: {
-                label: 'file extension pattern ',
-                required: true,
-            }
-        },
-    ]
+    }
 };
 class DirectoryWalker extends cef.Step {
     constructor(params, batch) {
@@ -75,32 +78,33 @@ class DirectoryWalker extends cef.Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extension : the extension list filter
      */
-    walk(dir, re_file, re_ext) {
-        fs.readdirSync(dir).forEach(f => {
-            let dirPath = path.join(dir, f);
-            if (fs.statSync(dirPath).isDirectory()) {
-                this.walk(dirPath, re_file, re_ext);
-            }
-            else {
-                const filename = path.join(dir, f);
-                const extension = path.extname(filename).replace(/^\./, '');
-                if (re_file.test(filename) && re_ext.test(extension)) {
-                    this.output('files', { filename });
+    walk(dir, filter, recursive, outdirs, outfiles) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const dirs = fs.readdirSync(dir);
+            for (let item in dirs) {
+                let pathname = path.join(dir, item);
+                if (fs.statSync(pathname).isDirectory()) {
+                    if (recursive)
+                        this.walk(pathname, filter, recursive, outdirs, outfiles);
+                }
+                else {
+                    const pathname = path.join(dir, item);
+                    if (filter.test(pathname)) {
+                        yield this.output('files', { pathname });
+                    }
                 }
             }
-        });
-    }
-    start() {
-        return __awaiter(this, void 0, void 0, function* () {
         });
     }
     doit() {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
                 const directory = this.params['directory'];
-                const pattern = this.params['pattern'];
-                const extension = this.params['extension'];
-                this.walk(directory, pattern, extension);
+                const filter = this.params['pattern'];
+                const recursive = this.params['recursive'];
+                const outdirs = this.params['outdirs'];
+                const outfiles = this.params['outfiles'];
+                this.walk(directory, filter, recursive, outdirs, outfiles);
             });
         });
     }
