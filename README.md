@@ -21,7 +21,7 @@
 ## inputs
 
 ## outputs
-    - output __files__ : output found filenames 
+    - output **files** : output found filenames 
 # DirectoryWatcher
     Directory change watcher step
 
