@@ -21,7 +21,7 @@
 ## inputs
 
 ## outputs
->- output **files** : output found filenames 
+>- **files** : output found filenames 
 
 ---
 # DirectoryWatcher
@@ -40,4 +40,4 @@
 ## inputs
 
 ## outputs
->>- output **files** : changed files 
+>>- **files** : changed files 
