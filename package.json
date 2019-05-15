@@ -4,7 +4,8 @@
     "description": "a cef (cloud engine factory) plugin  library providing file system steps for file/directory operations",
     "main": "index.js",
     "scripts": {
-        "start": "node ./steps/test.js"
+        "start": "node ./steps/test.js",
+        "doc": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher"
     },
     "author": "",
     "license": "UNLICENSED",
