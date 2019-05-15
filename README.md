@@ -38,4 +38,4 @@
 ## inputs
 
 ## outputs
-    - output **files** : changed files 
+    - output *files* : changed files 
