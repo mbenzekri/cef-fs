@@ -22,7 +22,7 @@
 ---
 ## parameters
 > **directory**: *{string}* -- directory pathname to walk [default = `c:/tmp`]
->
+> 
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
@@ -32,6 +32,7 @@
 >|`${pojo.dirname}`| use an inputed pojo property "dirname" from port "files |
 
 > **pattern**: *{regexp}* -- full pathname regexp filter [default = `.*`]
+> 
 >| Value | Description | 
 >|-------|-------------| 
 >|`.*`| select all files/directory |
@@ -40,10 +41,13 @@
 >|`^${args.root}/`| only starting with process argument "root" |
 
 > **recursive**: *{boolean}* -- if true do a recursive walk [default = `false`]
+> 
 
 > **outdirs**: *{boolean}* -- if true output directories [default = `true`]
+> 
 
 > **outfiles**: *{boolean}* -- if true output filtes [default = `true`]
+> 
 
 
 ## outputs
@@ -64,6 +68,7 @@
 ---
 ## parameters
 > **directory**: *{string}* -- the directory to watch for changes [default = `c:/tmp`]
+> 
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
@@ -72,6 +77,7 @@
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
 
 > **pattern**: *{regexp}* -- full pathname regexp filter [default = `.*`]
+> 
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
@@ -80,8 +86,10 @@
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
 
 > **created**: *{boolean}* -- if true output created files [default = `true`]
+> 
 
 > **deleted**: *{boolean}* -- if true output deleted files  [default = `c:	mps`]
+> 
 
 
 ## outputs
@@ -102,16 +110,22 @@
 ---
 ## parameters
 > **filename**: *{string}* -- the log file name full path and name [default = `c:	mpmylogfile.log`]
+> 
 
 > **createdir**: *{boolean}* -- if true create the absent directories [default = `true`]
+> 
 
 > **append**: *{boolean}* -- if true and file exists append  [default = `true`]
+> 
 
 > **message**: *{string}* -- the message to be outputed for each pojo [default = `${JSON.stringify(pojo)}`]
+> 
 
 > **header**: *{string}* -- text to log into the file before pojo outputing [default = `null`]
+> 
 
 > **footer**: *{string}* -- text to log into the file after all pojos outputed [default = `null`]
+> 
 
 ## inputs
 >- **pojos** -- pojos to be logged 
