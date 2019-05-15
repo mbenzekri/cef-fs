@@ -22,6 +22,8 @@
 
 ## outputs
 >- output **files** : output found filenames 
+
+---
 # DirectoryWatcher
 >Directory change watcher step
 
