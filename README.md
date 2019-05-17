@@ -87,7 +87,7 @@
 > 
 >| Value | Description | 
 >|-------|-------------| 
->|`[.]()(doc|docx)`| select  |
+>|`[.](doc\|docx)$`| select only doc and docx changes |
 >|`^[^C]:`| avoid "C:" starting paths  |
 >|`^[A-Z]:`| must be absolute pathname |
 >|`.*${globs.asubstr}.*`| must contain a known substring |

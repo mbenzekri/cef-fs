@@ -38,7 +38,7 @@ export const declaration: cef.Declaration = {
             type: 'regexp',
             default: '.*',
             examples: [
-                { value: '[.]()(doc|docx)', title: 'select ' },
+                { value: '[.](doc\\|docx)$', title: 'select only doc and docx changes' },
                 { value: '^[^C]:', title: 'avoid "C:" starting paths ' },
                 { value: '^[A-Z]:', title: 'must be absolute pathname' },
                 { value: '.*${globs.asubstr}.*', title: 'must contain a known substring' },
