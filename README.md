@@ -38,7 +38,7 @@
 >| Value | Description | 
 >|-------|-------------| 
 >|`.*`| select all files/directory |
->|`[.](doc|pdf)$`| doc and pdf files |
+>|`[.](doc\|pdf)$`| doc and pdf files |
 >|`^d:`| only starting with "d:" |
 >|`^${args.root}/`| only starting with process argument "root" |
 
