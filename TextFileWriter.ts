@@ -114,7 +114,7 @@ class TextFileWriter extends cef.Step {
             if (createdir && !fs.existsSync(dir)) fs.mkdirSync(dir, {recursive:true})
         } catch(e){
             this.streams[filename] = null;
-            this.error(`${this.decl.gitid}: unable to create directory  ${dir} due to => ${e.message}`)
+            this.error(`unable to create directory  ${dir} due to => ${e.message}`)
         }
         // create vs append to the file 
         const stream = fs.createWriteStream(filename, {flags, encoding:'utf8'}) 

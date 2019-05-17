@@ -4,13 +4,13 @@
     "title": "file system steps",
     "description": "this pojo engine step library provides files and directories management steps",
     "main": "./steps/tests.js",
-    "config": {
-        "steps": ""
-    },
     "scripts": {
+    
+        "prebuild": "echo no prebuild.",
+        "postbuild": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher TextFileWriter",
         "build": "tsc",
-        "start": "node ./steps/test.js",
         "doc": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher TextFileWriter",
+        "pretest": "npm run build",
         "test": "node ./steps/test.js"
     },
     "author": "",
