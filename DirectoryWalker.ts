@@ -42,7 +42,7 @@ export const declaration: cef.Declaration = {
             default: '.*',
             examples: [
                 { value: '.*', title: 'select all files/directory' },
-                { value: '[.](doc|pdf)$', title: 'doc and pdf files' },
+                { value: '[.](doc\|pdf)$', title: 'doc and pdf files' },
                 { value: '^d:', title: 'only starting with "d:"' },
                 { value: '^${args.root}/', title: 'only starting with process argument "root"' },
             ]
