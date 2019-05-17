@@ -2,7 +2,7 @@
     "name": "cef-fs",
     "version": "1.0.0",
     "title": "file system steps",
-    "description": "this is a pojo engine library providing file system steps",
+    "description": "this pojo engine step library provides files and directories management steps",
     "main": "./steps/tests.js",
     "config": {
         "steps": ""
@@ -10,7 +10,7 @@
     "scripts": {
         "build": "tsc",
         "start": "node ./steps/test.js",
-        "doc": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher FileLogger",
+        "doc": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher TextFileWriter",
         "test": "node ./steps/test.js"
     },
     "author": "",

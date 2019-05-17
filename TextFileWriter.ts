@@ -3,8 +3,8 @@ import * as path from 'path'
 import * as fs from 'fs'
 
 export const declaration: cef.Declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/FileLogger',
-    title: 'logs inputed pojos to a file',
+    gitid: 'mbenzekri/cef-fs/steps/TextFileWriter',
+    title: 'write data from pojos to a file',
     desc: 'this step writes user formated data in a text file for each inputed pojo',
     features: [
         "allow writing some data for each pojo inputed",
@@ -12,21 +12,11 @@ export const declaration: cef.Declaration = {
         "allow file create or append mode",
         "allow header and footer output",
     ],
-    inputs: {
-        'pojos': {
-            title: 'pojos to be logged'
-        }
-    },
-    outputs: {
-        'files': {
-            title: 'files produced',
-        }
-    },
     parameters: {
         'filename': {
-            title: 'the log file name full path and name',
+            title: 'the path and file name to write',
             type: 'string',
-            default: 'c:/tmp/mylogfile.log'
+            default: 'c:/tmp/myfile.log'
         },
         'createdir': {
             title: 'if true create the missing directories',
@@ -39,24 +29,37 @@ export const declaration: cef.Declaration = {
             default: 'true',
         },
         'textline': {
-            title: 'the text to be outputed on file for each pojo',
+            title: 'the text to be written on the file for each pojo',
             type: 'string',
             default: '${JSON.stringify(pojo)}',
         },
         'header': {
-            title: 'text to log into the file before pojo outputing',
+            title: 'text to write into the file before pojo outputing',
             type: 'string',
             default: null
         },
         'footer': {
-            title: 'text to log into the file after all pojos outputed',
+            title: 'text to write into the file after all pojos outputed',
             type: 'string',
             default: null
         },
-    }
+    },
+    inputs: {
+        'pojos': {
+            title: 'pojos which data need to be written'
+        }
+    },
+    outputs: {
+        'files': {
+            title: 'files produced',
+            properties: {
+                filename: { type:'string', title: 'created filename'}
+            }
+        }
+    },
 }
 
-class FileLogger extends cef.Step {
+class TextFileWriter extends cef.Step {
     streams: { [key:string]: fs.WriteStream } = {}
     constructor (params: cef.ParamsMap) {
         super(declaration, params)
@@ -69,7 +72,10 @@ class FileLogger extends cef.Step {
      * @param {RegExp} extensions : the extension list filter 
      */
    
-    async end() {  
+    async end() {
+        for (let filename in Object.keys(this.streams)) {
+            await this.output('files',{filename})
+        }
         Object.keys(this.streams).forEach(filename => {
             const stream = this.streams[filename] 
             stream.write(this.params.footer,err => {
@@ -125,4 +131,4 @@ class FileLogger extends cef.Step {
     }
 }
 
-export function  create(params: cef.ParamsMap) : FileLogger  { return new FileLogger(params) };
+export function  create(params: cef.ParamsMap) : TextFileWriter  { return new TextFileWriter(params) };

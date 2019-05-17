@@ -1,6 +1,6 @@
 
 # cef-fs: file system steps
->this is a pojo engine library providing file system steps
+>this pojo engine step library provides files and directories management steps
 # install
 
 >`npm install mbenzekri/cef-fs`
@@ -8,7 +8,7 @@
 # included steps 
 >- [DirectoryWalker](#directorywalker-directory-tree-recursive-walk) : directory tree recursive walk
 >- [DirectoryWatcher](#directorywatcher-directory-change-watcher-step) : directory change watcher step
->- [FileLogger](#filelogger-logs-inputed-pojos-to-a-file) : logs inputed pojos to a file
+>- [TextFileWriter](#textfilewriter-write-data-from-pojos-to-a-file) : write data from pojos to a file
 ---
 # DirectoryWalker directory tree recursive walk
 >
@@ -54,10 +54,11 @@
 
 ## outputs
 >- **files** -- for each selected file or directory a pojo is outputed through this port 
->> expected properties: 
->> **pathname** *{string}* -- path name of the file
->> **isdir** *{boolean}* -- true if pathname is a directory
->> **isfile** *{boolean}* -- true if pathname is a file
+>> provided properties: 
+>>- **pathname** *{string}* -- path name of the file
+>>- **isdir** *{boolean}* -- true if pathname is a directory
+>>- **isfile** *{boolean}* -- true if pathname is a file
+
 
 ---
 
@@ -100,14 +101,15 @@
 
 ## outputs
 >- **files** -- changed files or directory 
->> expected properties: 
->> **pathname** *{string}* -- path name of the file or directory
->> **isdir** *{boolean}* -- true if pathname is a directory
->> **isfile** *{boolean}* -- true if pathname is a file
+>> provided properties: 
+>>- **pathname** *{string}* -- path name of the file or directory
+>>- **isdir** *{boolean}* -- true if pathname is a directory
+>>- **isfile** *{boolean}* -- true if pathname is a file
+
 
 ---
 
-# FileLogger logs inputed pojos to a file
+# TextFileWriter write data from pojos to a file
 >
 
 ## goal
@@ -120,7 +122,7 @@
 
 ---
 ## parameters
-> **filename** *{string}* -- the log file name full path and name  -- default = `c:/tmp/mylogfile.log`
+> **filename** *{string}* -- the path and file name to write  -- default = `c:/tmp/myfile.log`
 > 
 
 > **createdir** *{boolean}* -- if true create the missing directories  -- default = `true`
@@ -129,20 +131,23 @@
 > **append** *{boolean}* -- if true and file exists append   -- default = `true`
 > 
 
-> **textline** *{string}* -- the text to be outputed on file for each pojo  -- default = `${JSON.stringify(pojo)}`
+> **textline** *{string}* -- the text to be written on the file for each pojo  -- default = `${JSON.stringify(pojo)}`
 > 
 
-> **header** *{string}* -- text to log into the file before pojo outputing  -- default = `null`
+> **header** *{string}* -- text to write into the file before pojo outputing  -- default = `null`
 > 
 
-> **footer** *{string}* -- text to log into the file after all pojos outputed  -- default = `null`
+> **footer** *{string}* -- text to write into the file after all pojos outputed  -- default = `null`
 > 
 
 ## inputs
->- **pojos** -- pojos to be logged 
+>- **pojos** -- pojos which data need to be written 
 
 ## outputs
 >- **files** -- files produced 
+>> provided properties: 
+>>- **filename** *{string}* -- created filename
+
 
 ---
 

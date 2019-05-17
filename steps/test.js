@@ -23,9 +23,9 @@ const flowchart = {
         },
         {
             id: 'b',
-            gitid: 'mbenzekri/cef-fs/steps/FileLogger',
+            gitid: 'mbenzekri/cef-fs/steps/TextFileWriter',
             params: {
-                filename: '${globals.PATH}/cef/filelogger.log',
+                filename: '${globals.PATH}/cef/filelog.log',
                 append: 'false',
                 createdir: 'false',
                 message: '${JSON.stringify(pojo)}',

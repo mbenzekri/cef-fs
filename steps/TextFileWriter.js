@@ -12,8 +12,8 @@ const cef = require("cef-lib");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/FileLogger',
-    title: 'logs inputed pojos to a file',
+    gitid: 'mbenzekri/cef-fs/steps/TextFileWriter',
+    title: 'write data from pojos to a file',
     desc: 'this step writes user formated data in a text file for each inputed pojo',
     features: [
         "allow writing some data for each pojo inputed",
@@ -23,9 +23,9 @@ exports.declaration = {
     ],
     parameters: {
         'filename': {
-            title: 'the log file name full path and name',
+            title: 'the path and file name to write',
             type: 'string',
-            default: 'c:/tmp/mylogfile.log'
+            default: 'c:/tmp/myfile.log'
         },
         'createdir': {
             title: 'if true create the missing directories',
@@ -38,24 +38,24 @@ exports.declaration = {
             default: 'true',
         },
         'textline': {
-            title: 'the text to be outputed on file for each pojo',
+            title: 'the text to be written on the file for each pojo',
             type: 'string',
             default: '${JSON.stringify(pojo)}',
         },
         'header': {
-            title: 'text to log into the file before pojo outputing',
+            title: 'text to write into the file before pojo outputing',
             type: 'string',
             default: null
         },
         'footer': {
-            title: 'text to log into the file after all pojos outputed',
+            title: 'text to write into the file after all pojos outputed',
             type: 'string',
             default: null
         },
     },
     inputs: {
         'pojos': {
-            title: 'pojos to be logged'
+            title: 'pojos which data need to be written'
         }
     },
     outputs: {
@@ -67,7 +67,7 @@ exports.declaration = {
         }
     },
 };
-class FileLogger extends cef.Step {
+class TextFileWriter extends cef.Step {
     constructor(params) {
         super(exports.declaration, params);
         this.streams = {};
@@ -143,7 +143,7 @@ class FileLogger extends cef.Step {
         return stream;
     }
 }
-function create(params) { return new FileLogger(params); }
+function create(params) { return new TextFileWriter(params); }
 exports.create = create;
 ;
-//# sourceMappingURL=FileLogger.js.map
+//# sourceMappingURL=TextFileWriter.js.map
