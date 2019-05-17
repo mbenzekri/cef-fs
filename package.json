@@ -2,7 +2,7 @@
     "name": "cef-fs",
     "version": "1.0.0",
     "title": "file system steps",
-    "description": "a pojo engine library providing file system steps",
+    "description": "this is a pojo engine library providing file system steps",
     "main": "./steps/tests.js",
     "config": {
         "steps": ""

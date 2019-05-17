@@ -1,6 +1,6 @@
 
-# cef-fs: pkg.title
->a pojo engine library providing file system steps
+# cef-fs: file system steps
+>this is a pojo engine library providing file system steps
 # install
 
 >`npm install mbenzekri/cef-fs`
