@@ -12,51 +12,56 @@ const cef = require("cef-lib");
 const fs = require("fs");
 exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
-    title: 'Directory change watcher step',
-    desc: 'emit a pojo for each directory change',
+    title: 'directory change watcher step',
+    desc: 'this step emits a pojo for each change in a given directory',
     features: [
-        "allow directory change watching ",
+        "allow directory change detection",
         "allow regexp filtering for full pathname directories/files",
         "allow change type filtering (create and/or deleted",
     ],
     inputs: {},
     outputs: {
         'files': {
-            desc: 'changed files'
+            title: 'changed files or directory',
+            properties: {
+                "pathname": { type: 'string', title: 'path name of the file or directory' },
+                "isdir": { type: 'boolean', title: 'true if pathname is a directory' },
+                "isfile": { type: 'boolean', title: 'true if pathname is a file' },
+            }
         }
     },
     parameters: {
         'directory': {
-            desc: 'the directory to watch for changes',
+            title: 'the directory to watch for changes',
             type: 'string',
             default: 'c:/tmp',
             examples: [
-                { value: 'c:/tmp', desc: 'set parameter directory to a constant' },
-                { value: '$\{args.my_param_name}', desc: 'use a process parameter to set directory' },
-                { value: '$\{globs.my_glob_name}', desc: 'use a step global variable to set directory' },
-                { value: '$\{args.root}/$\{globs.prefix}_suffix}', desc: 'use mixed variables' },
+                { value: 'c:/tmp', title: 'set parameter directory to a constant' },
+                { value: '$\{args.my_param_name}', title: 'use a process parameter to set directory' },
+                { value: '$\{globs.my_glob_name}', title: 'use a step global variable to set directory' },
+                { value: '$\{args.root}/$\{globs.prefix}_suffix}', title: 'use mixed variables' },
             ]
         },
         'pattern': {
-            desc: 'full pathname regexp filter',
+            title: 'full pathname regexp filter',
             type: 'regexp',
             default: '.*',
             examples: [
-                { value: 'c:/tmp', desc: 'set parameter directory to a constant' },
-                { value: '$\{args.my_param_name}', desc: 'use a process parameter to set directory' },
-                { value: '$\{globs.my_glob_name}', desc: 'use a step global variable to set directory' },
-                { value: '$\{args.root}/$\{globs.prefix}_suffix}', desc: 'use mixed variables' },
+                { value: '[.]()(doc|docx)', title: 'select ' },
+                { value: '^[^C]:', title: 'avoid "C:" starting paths ' },
+                { value: '^[A-Z]:', title: 'must be absolute pathname' },
+                { value: '.*${globs.asubstr}.*', title: 'must contain a known substring' },
             ]
         },
         'created': {
-            desc: 'if true output created files',
+            title: 'if true output created files',
             type: 'boolean',
             default: 'true',
         },
         'deleted': {
-            desc: 'if true output deleted files ',
+            title: 'if true output deleted files ',
             type: 'boolean',
-            default: 'c:\tmps',
+            default: 'true',
         },
     }
 };

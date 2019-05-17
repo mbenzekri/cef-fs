@@ -13,56 +13,61 @@ const path = require("path");
 const fs = require("fs");
 exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/DirectoryWalker',
-    title: 'Directory tree recursive walk and output',
-    desc: 'This step does a tree recursive walk and outputs every directories or files found',
+    title: 'directory tree recursive walk',
+    desc: 'this step does a tree recursive walk and outputs each directories and/or files found',
     features: [
-        "allow directory tree walking ",
+        "allow file search through a directory walking ",
         "allow recursive or flat walk",
         "allow type file/directory filter",
-        "allow regexp filtering for full pathname directories/files",
+        "allow regexp filtering for full pathname directories and/or files",
     ],
     inputs: {},
     outputs: {
         'files': {
-            desc: 'output found filenames'
+            title: 'for each selected file or directory a pojo is outputed through this port',
+            properties: {
+                "pathname": { type: 'string', title: 'path name of the file' },
+                "isdir": { type: 'boolean', title: 'true if pathname is a directory' },
+                "isfile": { type: 'boolean', title: 'true if pathname is a file' },
+            }
         }
     },
     parameters: {
         'directory': {
-            desc: 'directory pathname to walk',
+            title: 'directory pathname to walk',
             type: 'string',
             default: 'c:/tmp',
             examples: [
-                { value: 'c:/tmp', desc: 'set parameter directory to a constant' },
-                { value: '$\{args.my_param_name}', desc: 'use a process parameter to set directory' },
-                { value: '$\{globs.my_glob_name}', desc: 'use a step global variable to set directory' },
-                { value: '$\{args.root}/$\{globs.prefix}_suffix}', desc: 'use mixed variables' },
-                { value: '$\{pojo.dirname}', desc: 'use an inputed pojo property "dirname" from port "files' },
+                { value: 'c:/tmp', title: 'set parameter directory to a constant' },
+                { value: '$\{args.my_param_name}', title: 'use a process parameter to set directory' },
+                { value: '$\{globs.my_glob_name}', title: 'use a step global variable to set directory' },
+                { value: '$\{args.root}/$\{globs.prefix}_suffix}', title: 'use mixed variables' },
+                { value: '$\{pojo.dirname}', title: 'use an inputed pojo property "dirname" from port "files' },
             ]
         },
         'pattern': {
-            desc: 'full pathname regexp filter',
+            title: 'full pathname regexp filter',
             type: 'regexp',
             default: '.*',
             examples: [
-                { value: '.*', desc: 'select all files/directory' },
-                { value: '[.](doc|pdf)$', desc: 'doc and pdf files' },
-                { value: '^d:', desc: 'only starting with "d:"' },
-                { value: '^${args.root}/', desc: 'only starting with process argument "root"' },
+                { value: '.*', title: 'select all files/directory' },
+                { value: '[.](doc|pdf)$', title: 'doc and pdf files' },
+                { value: '^d:', title: 'only starting with "d:"' },
+                { value: '^${args.root}/', title: 'only starting with process argument "root"' },
             ]
         },
         'recursive': {
-            desc: 'if true do a recursive walk',
+            title: 'if true do a recursive walk',
             type: 'boolean',
             default: 'false',
         },
         'outdirs': {
-            desc: 'if true output directories',
+            title: 'if true output directories',
             type: 'boolean',
             default: 'true',
         },
         'outfiles': {
-            desc: 'if true output filtes',
+            title: 'if true output files',
             type: 'boolean',
             default: 'true',
         }
@@ -82,16 +87,15 @@ class DirectoryWalker extends cef.Step {
         return __awaiter(this, void 0, void 0, function* () {
             const dirs = fs.readdirSync(dir);
             for (let item in dirs) {
-                let pathname = path.join(dir, item);
-                if (fs.statSync(pathname).isDirectory()) {
-                    if (recursive)
-                        this.walk(pathname, filter, recursive, outdirs, outfiles);
-                }
-                else {
-                    const pathname = path.join(dir, item);
+                const pathname = path.join(dir, item);
+                const isdir = fs.statSync(pathname).isDirectory();
+                const isfile = fs.statSync(pathname).isFile();
+                if (isfile || isdir) {
                     if (filter.test(pathname)) {
-                        yield this.output('files', { pathname });
+                        yield this.output('files', { pathname, isdir, isfile });
                     }
+                    if (isdir && recursive)
+                        this.walk(pathname, filter, recursive, outdirs, outfiles);
                 }
             }
         });

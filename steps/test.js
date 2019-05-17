@@ -5,6 +5,7 @@ const cef = require("cef-lib");
 const flowchart = {
     name: 'Testing DirectoryWatcher ',
     title: 'Testing DirectoryWatcher',
+    desc: 'Testing DirectoryWatcher',
     args: {},
     globals: {
         PATH: { value: 'D:/data', type: 'string', desc: 'the data root dir' }

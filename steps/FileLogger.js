@@ -13,51 +13,52 @@ const path = require("path");
 const fs = require("fs");
 exports.declaration = {
     gitid: 'mbenzekri/cef-fs/steps/FileLogger',
-    title: 'Pojo file logger',
-    desc: 'Logs inputed pojos data to a file',
+    title: 'logs inputed pojos to a file',
+    desc: 'this step writes user formated data in a text file for each inputed pojo',
     features: [
-        "allow writing data for each pojo inputed",
-        "allow creation dir if not present",
-        "allow append mode",
+        "allow writing some data for each pojo inputed",
+        "allow full directory path creation if missing",
+        "allow file create or append mode",
+        "allow header and footer output",
     ],
     inputs: {
         'pojos': {
-            desc: 'pojos to be logged'
+            title: 'pojos to be logged'
         }
     },
     outputs: {
         'files': {
-            desc: 'files produced',
+            title: 'files produced',
         }
     },
     parameters: {
         'filename': {
-            desc: 'the log file name full path and name',
+            title: 'the log file name full path and name',
             type: 'string',
-            default: 'c:\tmp\mylogfile.log'
+            default: 'c:/tmp/mylogfile.log'
         },
         'createdir': {
-            desc: 'if true create the absent directories',
+            title: 'if true create the missing directories',
             type: 'boolean',
             default: 'true',
         },
         'append': {
-            desc: 'if true and file exists append ',
+            title: 'if true and file exists append ',
             type: 'boolean',
             default: 'true',
         },
-        'message': {
-            desc: 'the message to be outputed for each pojo',
+        'textline': {
+            title: 'the text to be outputed on file for each pojo',
             type: 'string',
             default: '${JSON.stringify(pojo)}',
         },
         'header': {
-            desc: 'text to log into the file before pojo outputing',
+            title: 'text to log into the file before pojo outputing',
             type: 'string',
             default: null
         },
         'footer': {
-            desc: 'text to log into the file after all pojos outputed',
+            title: 'text to log into the file after all pojos outputed',
             type: 'string',
             default: null
         },
@@ -78,8 +79,11 @@ class FileLogger extends cef.Step {
         return __awaiter(this, void 0, void 0, function* () {
             Object.keys(this.streams).forEach(filename => {
                 const stream = this.streams[filename];
-                if (stream)
-                    stream.close();
+                stream.write(this.params.footer, err => {
+                    err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
+                    if (stream)
+                        stream.end();
+                });
             });
         });
     }
@@ -88,14 +92,11 @@ class FileLogger extends cef.Step {
             let pojo = yield this.input('pojos');
             while (pojo !== cef.EOF) {
                 const filename = this.params.filename;
-                const message = this.params.message;
+                const textline = this.params.textline;
                 const stream = this.getstream(filename);
                 if (stream !== null) {
-                    stream.write(message, (err) => {
-                        err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
-                    });
-                    stream.write('\n', (err) => {
-                        err && this.log(`${this.decl.gitid}: unable to write to file ${filename} due to => ${err.message}`);
+                    stream.write(`${textline}\n`, err => {
+                        err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
                     });
                 }
                 pojo = yield this.input('pojos');
@@ -119,16 +120,18 @@ class FileLogger extends cef.Step {
                 fs.mkdirSync(dir, { recursive: true });
         }
         catch (e) {
-            this.log(`${this.decl.gitid}: unable to create directory  ${dir} due to => ${e.message}`);
             this.streams[filename] = null;
-            return null;
+            this.error(`${this.decl.gitid}: unable to create directory  ${dir} due to => ${e.message}`);
         }
         // create vs append to the file 
         const stream = fs.createWriteStream(filename, { flags, encoding: 'utf8' });
         stream.on('error', err => {
-            this.log(`${this.decl.gitid}: unable to open file ${filename} due to => ${err.message}`);
             stream.end();
             this.streams[filename] = null;
+            this.error(`unable to open file ${filename} due to => ${err.message}`);
+        });
+        stream.write(this.params.header, err => {
+            err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
         });
         this.streams[filename] = stream;
         return stream;
