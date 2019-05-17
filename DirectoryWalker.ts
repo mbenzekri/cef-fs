@@ -92,14 +92,12 @@ class DirectoryWalker extends cef.Step {
         }
     }
     async doit() {
-        return new Promise((resolve, reject) => {
-            const directory = this.params['directory']
-            const filter = this.params['pattern']
-            const recursive = this.params['recursive']
-            const outdirs = this.params['outdirs']
-            const outfiles = this.params['outfiles']
-            this.walk(directory, filter, recursive, outdirs, outfiles)
-        })
+        const directory = this.params['directory']
+        const filter = this.params['pattern']
+        const recursive = this.params['recursive']
+        const outdirs = this.params['outdirs']
+        const outfiles = this.params['outfiles']
+        return this.walk(directory, filter, recursive, outdirs, outfiles)
     }
 }
 
