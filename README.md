@@ -25,8 +25,6 @@
 
 ## parameters
 > **directory** *{string}* -- directory pathname to walk  -- default = `c:/tmp`
-<details>
-<summary> examples </summary>
 > 
 >| Value | Description | 
 >|-------|-------------| 
@@ -35,7 +33,6 @@
 >|`${globs.my_glob_name}`| use a step global variable to set directory |
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
 >|`${pojo.dirname}`| use an inputed pojo property "dirname" from port "files |
-</details>
 
 > **pattern** *{regexp}* -- full pathname regexp filter  -- default = `.*`
 > 
