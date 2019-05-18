@@ -24,11 +24,9 @@
 ---
 
 ## parameters
-<details>
-<summary>
 > **directory** *{string}* -- directory pathname to walk  -- default = `c:/tmp`
-</summary>
-
+<details>
+<summary> examples </summary>
 > 
 >| Value | Description | 
 >|-------|-------------| 
