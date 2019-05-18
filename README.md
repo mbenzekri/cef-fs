@@ -12,7 +12,7 @@
 ---
 <details>
 <summary>
-DirectoryWalker directory tree recursive walk 
+**DirectoryWalker** directory tree recursive walk 
 </summary>
 
 # DirectoryWalker directory tree recursive walk
