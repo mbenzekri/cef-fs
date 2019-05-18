@@ -10,6 +10,11 @@
 >- [DirectoryWatcher](#directorywatcher-directory-change-watcher-step) : directory change watcher step
 >- [TextFileWriter](#textfilewriter-write-data-from-pojos-to-a-file) : write data from pojos to a file
 ---
+<details>
+<summary>
+DirectoryWalker directory tree recursive walk 
+</summary>
+
 # DirectoryWalker directory tree recursive walk
 >
 
@@ -60,8 +65,7 @@
 >>- **isdir** *{boolean}* -- true if pathname is a directory
 >>- **isfile** *{boolean}* -- true if pathname is a file
 
-
----
+</details>
 
 # DirectoryWatcher directory change watcher step
 >
