@@ -8,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const cef = require("cef-lib");
+const steps_1 = require("pojoe/steps");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/TextFileWriter',
+    gitid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
     title: 'write data from pojos to a file',
     desc: 'this step writes user formated data in a text file for each inputed pojo',
     features: [
@@ -67,7 +67,7 @@ exports.declaration = {
         }
     },
 };
-class TextFileWriter extends cef.Step {
+class TextFileWriter extends steps_1.Step {
     constructor(params) {
         super(exports.declaration, params);
         this.streams = {};
@@ -96,7 +96,7 @@ class TextFileWriter extends cef.Step {
     doit() {
         return __awaiter(this, void 0, void 0, function* () {
             let pojo = yield this.input('pojos');
-            while (pojo !== cef.EOF) {
+            while (pojo !== steps_1.EOP) {
                 const filename = this.params.filename;
                 const textline = this.params.textline;
                 const stream = this.getstream(filename);
@@ -143,7 +143,5 @@ class TextFileWriter extends cef.Step {
         return stream;
     }
 }
-function create(params) { return new TextFileWriter(params); }
-exports.create = create;
-;
+steps_1.Step.Register(exports.declaration, (params) => new TextFileWriter(params));
 //# sourceMappingURL=TextFileWriter.js.map

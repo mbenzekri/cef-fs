@@ -1,8 +1,8 @@
-import * as cef from 'cef-lib'
+import {Declaration, Step, ParamsMap} from 'pojoe/steps'
 import * as fs from 'fs'
 
-export const declaration: cef.Declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
+const declaration: Declaration = {
+    gitid: 'mbenzekri/pojoe-fs/steps/DirectoryWatcher',
     title: 'directory change watcher step',
     desc: 'this step emits a pojo for each change in a given directory',
     features: [
@@ -57,9 +57,9 @@ export const declaration: cef.Declaration = {
     }
 }
 
-class DirectoryWatcher extends cef.Step {
+class DirectoryWatcher extends Step {
     streams: { [key: string]: fs.WriteStream } = {}
-    constructor(params: cef.ParamsMap) {
+    constructor(params: ParamsMap) {
         super(declaration, params)
     }
 
@@ -97,4 +97,4 @@ class DirectoryWatcher extends cef.Step {
     }
 }
 
-export function create(params: cef.ParamsMap): DirectoryWatcher { return new DirectoryWatcher(params) };
+Step.Register(declaration,(params: ParamsMap): Step =>new DirectoryWatcher(params) )

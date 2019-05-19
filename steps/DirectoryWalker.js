@@ -8,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const cef = require("cef-lib");
+const steps_1 = require("pojoe/steps");
 const path = require("path");
 const fs = require("fs");
-exports.declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/DirectoryWalker',
+const declaration = {
+    gitid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
     title: 'directory tree recursive walk',
     desc: 'this step does a tree recursive walk and outputs each directories and/or files found',
     features: [
@@ -73,9 +73,9 @@ exports.declaration = {
         }
     }
 };
-class DirectoryWalker extends cef.Step {
-    constructor(params, batch) {
-        super(exports.declaration, params);
+class DirectoryWalker extends steps_1.Step {
+    constructor(params) {
+        super(declaration, params);
     }
     /**
      * walk recursively a directory and output files mattching pattern and in extension list
@@ -111,7 +111,5 @@ class DirectoryWalker extends cef.Step {
         });
     }
 }
-function create(params, batch) { return new DirectoryWalker(params, batch); }
-exports.create = create;
-;
+steps_1.Step.Register(declaration, (params) => new DirectoryWalker(params));
 //# sourceMappingURL=DirectoryWalker.js.map

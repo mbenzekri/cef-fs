@@ -1,4 +1,4 @@
-import * as cef from 'cef-lib';
+import * as cef from 'pojoe';
 import * as fs from 'fs';
 export declare const declaration: cef.Declaration;
 declare class TextFileWriter extends cef.Step {

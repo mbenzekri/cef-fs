@@ -1,29 +1,34 @@
 {
-    "name": "cef-fs",
+    "name": "pojoe-fs",
     "version": "1.0.0",
     "title": "file system steps",
-    "description": "this pojo engine step library provides files and directories management steps",
+    "description": "this module provides steps for files and directories management",
     "main": "./steps/tests.js",
-    "scripts": {
-    
-        "prebuild": "echo no prebuild.",
-        "postbuild": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher TextFileWriter",
-        "build": "tsc",
-        "doc": "node ./node_modules/cef-lib/docgen.js DirectoryWalker DirectoryWatcher TextFileWriter",
-        "pretest": "npm run build",
-        "test": "node ./steps/test.js"
+    "config": {
+        "steps": ["DirectoryWalker", "DirectoryWatcher", "TextFileWriter"]        
     },
-    "author": "",
-    "license": "UNLICENSED",
+    "scripts": {
+        "build": "tsc",
+        "pretest": "tsc",
+        "test": "node ./steps/test.js",
+        "predoc": "tsc",
+        "doc": "node ./node_modules/pojoe/steps/docgen.js"
+    },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mbenzekri/cef-fs.git"
+        "url": "git+https://github.com/mbenzekri/pojoe-fs.git"
     },
+    "author": "Mohamed Ben Zekri",
+    "license": "UNLICENSED",
+    "bugs": {
+        "url": "https://github.com/mbenzekri/pojoe-fs/issues"
+    },
+    "homepage": "https://github.com/mbenzekri/pojoe-fs#readme",
     "dependencies": {},
     "devDependencies": {
         "@types/node": "^12.0.1"
     },
     "peerDependencies": {
-        "cef-lib": "github:mbenzekri/cef-lib"
+        "pojoe": "github:mbenzekri/pojoe"
     }
 }

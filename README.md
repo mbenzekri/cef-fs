@@ -1,20 +1,14 @@
 
-# cef-fs: file system steps
->this pojo engine step library provides files and directories management steps
+# pojoe-fs: file system steps
+>this module provides steps for files and directories management
 # install
 
->`npm install mbenzekri/cef-fs`
+>`npm install mbenzekri/pojoe-fs`
 
 # included steps 
 >- [DirectoryWalker](#directorywalker-directory-tree-recursive-walk) : directory tree recursive walk
 >- [DirectoryWatcher](#directorywatcher-directory-change-watcher-step) : directory change watcher step
 >- [TextFileWriter](#textfilewriter-write-data-from-pojos-to-a-file) : write data from pojos to a file
----
-<details>
-<summary>
-**DirectoryWalker** directory tree recursive walk 
-</summary>
-
 # DirectoryWalker directory tree recursive walk
 >
 
@@ -27,7 +21,6 @@
 >- allow regexp filtering for full pathname directories and/or files 
 
 ---
-
 ## parameters
 > **directory** *{string}* -- directory pathname to walk  -- default = `c:/tmp`
 > 
@@ -65,7 +58,8 @@
 >>- **isdir** *{boolean}* -- true if pathname is a directory
 >>- **isfile** *{boolean}* -- true if pathname is a file
 
-</details>
+
+---
 
 # DirectoryWatcher directory change watcher step
 >
@@ -156,3 +150,4 @@
 
 ---
 
+---

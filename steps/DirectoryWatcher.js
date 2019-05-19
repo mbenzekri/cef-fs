@@ -8,10 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const cef = require("cef-lib");
+const steps_1 = require("pojoe/steps");
 const fs = require("fs");
-exports.declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/DirectoryWatcher',
+const declaration = {
+    gitid: 'mbenzekri/pojoe-fs/steps/DirectoryWatcher',
     title: 'directory change watcher step',
     desc: 'this step emits a pojo for each change in a given directory',
     features: [
@@ -65,9 +65,9 @@ exports.declaration = {
         },
     }
 };
-class DirectoryWatcher extends cef.Step {
+class DirectoryWatcher extends steps_1.Step {
     constructor(params) {
-        super(exports.declaration, params);
+        super(declaration, params);
         this.streams = {};
     }
     /**
@@ -105,7 +105,5 @@ class DirectoryWatcher extends cef.Step {
         });
     }
 }
-function create(params) { return new DirectoryWatcher(params); }
-exports.create = create;
-;
+steps_1.Step.Register(declaration, (params) => new DirectoryWatcher(params));
 //# sourceMappingURL=DirectoryWatcher.js.map

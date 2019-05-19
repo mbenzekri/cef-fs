@@ -8,8 +8,20 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/node_modules/cef-lib/docgen.js",
+            "name": "doc Program",
+            "program": "${workspaceFolder}/node_modules/pojoe/steps/docgen.js",
+            "args": ["DirectoryWalker"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "cwd":"${workspaceFolder}",
+            "outFiles": [
+                "${workspaceFolder}//**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test Program",
+            "program": "${workspaceFolder}/steps/test.js",
             "preLaunchTask": "tsc: build - tsconfig.json",
             "cwd":"${workspaceFolder}",
             "outFiles": [

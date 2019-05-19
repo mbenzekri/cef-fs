@@ -1,9 +1,9 @@
-import * as cef from 'cef-lib'
+import { Declaration, Step, ParamsMap } from 'pojoe/steps'
 import * as path from 'path'
 import * as fs from 'fs'
 
-export const declaration: cef.Declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/DirectoryWalker',
+const declaration: Declaration = {
+    gitid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
     title: 'directory tree recursive walk',
     desc: 'this step does a tree recursive walk and outputs each directories and/or files found',
     features: [
@@ -66,8 +66,8 @@ export const declaration: cef.Declaration = {
 }
 
 
-class DirectoryWalker extends cef.Step {
-    constructor(params: cef.ParamsMap, batch: cef.Batch) {
+class DirectoryWalker extends Step {
+    constructor(params: ParamsMap) {
         super(declaration, params)
     }
 
@@ -101,4 +101,4 @@ class DirectoryWalker extends cef.Step {
     }
 }
 
-export function create(params: cef.ParamsMap, batch: cef.Batch): DirectoryWalker { return new DirectoryWalker(params, batch) };
+Step.Register(declaration, (params: ParamsMap): Step => new DirectoryWalker(params))

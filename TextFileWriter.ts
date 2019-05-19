@@ -1,9 +1,9 @@
-import * as cef from 'cef-lib'
+import { Step, Declaration, ParamsMap , EOP} from 'pojoe/steps'
 import * as path from 'path'
 import * as fs from 'fs'
 
-export const declaration: cef.Declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/TextFileWriter',
+export const declaration: Declaration = {
+    gitid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
     title: 'write data from pojos to a file',
     desc: 'this step writes user formated data in a text file for each inputed pojo',
     features: [
@@ -59,9 +59,9 @@ export const declaration: cef.Declaration = {
     },
 }
 
-class TextFileWriter extends cef.Step {
+class TextFileWriter extends Step {
     streams: { [key:string]: fs.WriteStream } = {}
-    constructor (params: cef.ParamsMap) {
+    constructor (params: ParamsMap) {
         super(declaration, params)
     }
 
@@ -87,7 +87,7 @@ class TextFileWriter extends cef.Step {
     }
     async doit() {
         let pojo = await this.input('pojos') 
-        while (pojo !== cef.EOF) {
+        while (pojo !== EOP) {
             const filename = this.params.filename
             const textline = this.params.textline
             const stream = this.getstream(filename)
@@ -131,4 +131,4 @@ class TextFileWriter extends cef.Step {
     }
 }
 
-export function  create(params: cef.ParamsMap) : TextFileWriter  { return new TextFileWriter(params) };
+Step.Register(declaration, (params: ParamsMap) : Step  => new TextFileWriter(params))

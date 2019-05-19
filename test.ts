@@ -1,41 +1,24 @@
 /* eslint-disable no-template-curly-in-string */
-import * as cef from 'cef-lib'
+import { Testcase, Testbed } from 'pojoe'
+import './DirectoryWalker'
 
-const flowchart: cef.Flowchart = {
-    name: 'Testing DirectoryWatcher ',
-    title: 'Testing DirectoryWatcher',
-    desc: 'Testing DirectoryWatcher',
-    args: {},
-    globals: {
-        PATH : { value: 'D:/data', type: 'string', desc: 'the data root dir' }
+const tests: Testcase[] = [
+    {
+        stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
+        title: 'DirectoryWalker',
+        params: { 
+            directory: './.vscode',
+            pattern: '.*',
+            recursive: 'true',
+            outdirs: 'true',
+            outfiles: 'true',
+        },
+        injected: {},
+        expected: { 'files': [
+            { 'pathname': './vscode/launch.json', isdir:false, isfile:true} 
+        ] },
     },
-    steps: [
-        {
-            id: 'a',
-            gitid: 'mbenzekri/cef-fs/steps/DirectoryWalker',
-            params: {
-                directory: '${globals.PATH}',
-                created: 'true',
-                deleted: 'true',
-                pattern: '.*',
-            },
-        },
-        {
-            id: 'b',
-            gitid: 'mbenzekri/cef-fs/steps/TextFileWriter',
-            params: {
-                filename: '${globals.PATH}/cef/filelog.log',
-                append: 'false',
-                createdir: 'false',
-                message: '${JSON.stringify(pojo)}',
-            },
-        },
-    ],
-    pipes: [
-        { from: 'a', outport:'files', to: 'b', inport: 'pojos' }
-    ]
-}
+]
 
-const batch = new cef.Batch(flowchart)
+Testbed.run(tests)
 
-batch.run();

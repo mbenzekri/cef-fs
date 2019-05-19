@@ -1,41 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable no-template-curly-in-string */
-const cef = require("cef-lib");
-const flowchart = {
-    name: 'Testing DirectoryWatcher ',
-    title: 'Testing DirectoryWatcher',
-    desc: 'Testing DirectoryWatcher',
-    args: {},
-    globals: {
-        PATH: { value: 'D:/data', type: 'string', desc: 'the data root dir' }
+const pojoe_1 = require("pojoe");
+require("./DirectoryWalker");
+const tests = [
+    {
+        stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
+        title: 'DirectoryWalker',
+        params: {
+            directory: './.vscode',
+            pattern: '.*',
+            recursive: 'true',
+            outdirs: 'true',
+            outfiles: 'true',
+        },
+        injected: {},
+        expected: { 'files': [
+                { 'pathname': './vscode/launch.json', isdir: false, isfile: true }
+            ] },
     },
-    steps: [
-        {
-            id: 'a',
-            gitid: 'mbenzekri/cef-fs/steps/DirectoryWalker',
-            params: {
-                directory: '${globals.PATH}',
-                created: 'true',
-                deleted: 'true',
-                pattern: '.*',
-            },
-        },
-        {
-            id: 'b',
-            gitid: 'mbenzekri/cef-fs/steps/TextFileWriter',
-            params: {
-                filename: '${globals.PATH}/cef/filelog.log',
-                append: 'false',
-                createdir: 'false',
-                message: '${JSON.stringify(pojo)}',
-            },
-        },
-    ],
-    pipes: [
-        { from: 'a', outport: 'files', to: 'b', inport: 'pojos' }
-    ]
-};
-const batch = new cef.Batch(flowchart);
-batch.run();
+];
+pojoe_1.Testbed.run(tests);
 //# sourceMappingURL=test.js.map

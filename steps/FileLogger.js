@@ -8,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const cef = require("cef-lib");
+const cef = require("pojoe");
 const path = require("path");
 const fs = require("fs");
 exports.declaration = {
-    gitid: 'mbenzekri/cef-fs/steps/FileLogger',
+    gitid: 'mbenzekri/pojoe-fs/steps/FileLogger',
     title: 'logs inputed pojos to a file',
     desc: 'this step writes user formated data in a text file for each inputed pojo',
     features: [
@@ -96,7 +96,7 @@ class FileLogger extends cef.Step {
     doit() {
         return __awaiter(this, void 0, void 0, function* () {
             let pojo = yield this.input('pojos');
-            while (pojo !== cef.EOF) {
+            while (pojo !== cef.EOP) {
                 const filename = this.params.filename;
                 const textline = this.params.textline;
                 const stream = this.getstream(filename);
