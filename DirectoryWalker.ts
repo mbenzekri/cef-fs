@@ -79,24 +79,24 @@ class DirectoryWalker extends Step {
      */
     async walk(dir: string, filter: RegExp, recursive: boolean, outdirs: boolean, outfiles: boolean) {
         const dirs = fs.readdirSync(dir)
-        for (let item in dirs) {
+        for (let item of dirs) {
             const pathname = path.join(dir, item);
             const isdir = fs.statSync(pathname).isDirectory()
             const isfile = fs.statSync(pathname).isFile()
-            if (isfile || isdir) {
-                if (filter.test(pathname)) {
-                    await this.output('files', { pathname, isdir, isfile })
-                }
+            // avoid unix special files 
+            if (isfile || isdir) { 
+                isfile && outfiles && filter.test(pathname) && await this.output('files', { pathname, isdir, isfile })
+                isdir && outdirs && filter.test(pathname) && await this.output('files', { pathname, isdir, isfile })
                 if (isdir && recursive) this.walk(pathname, filter, recursive, outdirs, outfiles)
             }
         }
     }
     async doit() {
-        const directory = this.params['directory']
-        const filter = this.params['pattern']
-        const recursive = this.params['recursive']
-        const outdirs = this.params['outdirs']
-        const outfiles = this.params['outfiles']
+        const directory = this.params.directory
+        const filter = this.params.pattern
+        const recursive = this.params.recursive
+        const outdirs = this.params.outdirs
+        const outfiles = this.params.outfiles
         return this.walk(directory, filter, recursive, outdirs, outfiles)
     }
 }

@@ -9,10 +9,10 @@
     },
     "scripts": {
         "build": "tsc",
-        "pretest": "tsc",
-        "test": "node ./steps/test.js",
         "predoc": "tsc",
-        "doc": "node ./node_modules/pojoe/steps/docgen.js"
+        "doc": "node ./node_modules/pojoe/steps/docgen.js",
+        "pretest": "npm run doc",
+        "test": "node ./steps/test.js"
     },
     "repository": {
         "type": "git",

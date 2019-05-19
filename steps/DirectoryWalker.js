@@ -86,14 +86,14 @@ class DirectoryWalker extends steps_1.Step {
     walk(dir, filter, recursive, outdirs, outfiles) {
         return __awaiter(this, void 0, void 0, function* () {
             const dirs = fs.readdirSync(dir);
-            for (let item in dirs) {
+            for (let item of dirs) {
                 const pathname = path.join(dir, item);
                 const isdir = fs.statSync(pathname).isDirectory();
                 const isfile = fs.statSync(pathname).isFile();
+                // avoid unix special files 
                 if (isfile || isdir) {
-                    if (filter.test(pathname)) {
-                        yield this.output('files', { pathname, isdir, isfile });
-                    }
+                    isfile && outfiles && filter.test(pathname) && (yield this.output('files', { pathname, isdir, isfile }));
+                    isdir && outdirs && filter.test(pathname) && (yield this.output('files', { pathname, isdir, isfile }));
                     if (isdir && recursive)
                         this.walk(pathname, filter, recursive, outdirs, outfiles);
                 }
@@ -102,11 +102,11 @@ class DirectoryWalker extends steps_1.Step {
     }
     doit() {
         return __awaiter(this, void 0, void 0, function* () {
-            const directory = this.params['directory'];
-            const filter = this.params['pattern'];
-            const recursive = this.params['recursive'];
-            const outdirs = this.params['outdirs'];
-            const outfiles = this.params['outfiles'];
+            const directory = this.params.directory;
+            const filter = this.params.pattern;
+            const recursive = this.params.recursive;
+            const outdirs = this.params.outdirs;
+            const outfiles = this.params.outfiles;
             return this.walk(directory, filter, recursive, outdirs, outfiles);
         });
     }
