@@ -31,7 +31,6 @@
 >|`${globs.my_glob_name}`| use a step global variable to set directory |
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
 >|`${pojo.dirname}`| use an inputed pojo property "dirname" from port "files |
-
 > **pattern** *{regexp}* -- full pathname regexp filter  -- default = `.*`
 > 
 >| Value | Description | 
@@ -40,16 +39,12 @@
 >|`[.](doc\|pdf)$`| doc and pdf files |
 >|`^d:`| only starting with "d:" |
 >|`^${args.root}/`| only starting with process argument "root" |
-
 > **recursive** *{boolean}* -- if true do a recursive walk  -- default = `false`
 > 
-
 > **outdirs** *{boolean}* -- if true output directories  -- default = `true`
 > 
-
 > **outfiles** *{boolean}* -- if true output files  -- default = `true`
 > 
-
 
 ## outputs
 >- **files** -- for each selected file or directory a pojo is outputed through this port 
@@ -81,7 +76,6 @@
 >|`${args.my_param_name}`| use a process parameter to set directory |
 >|`${globs.my_glob_name}`| use a step global variable to set directory |
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
-
 > **pattern** *{regexp}* -- full pathname regexp filter  -- default = `.*`
 > 
 >| Value | Description | 
@@ -90,13 +84,10 @@
 >|`^[^C]:`| avoid "C:" starting paths  |
 >|`^[A-Z]:`| must be absolute pathname |
 >|`.*${globs.asubstr}.*`| must contain a known substring |
-
 > **created** *{boolean}* -- if true output created files  -- default = `true`
 > 
-
 > **deleted** *{boolean}* -- if true output deleted files   -- default = `true`
 > 
-
 
 ## outputs
 >- **files** -- changed files or directory 
@@ -124,22 +115,16 @@
 ## parameters
 > **filename** *{string}* -- the path and file name to write  -- default = `c:/tmp/myfile.log`
 > 
-
 > **createdir** *{boolean}* -- if true create the missing directories  -- default = `true`
 > 
-
 > **append** *{boolean}* -- if true and file exists append   -- default = `true`
 > 
-
 > **textline** *{string}* -- the text to be written on the file for each pojo  -- default = `${JSON.stringify(pojo)}`
 > 
-
 > **header** *{string}* -- text to write into the file before pojo outputing  -- default = `null`
 > 
-
 > **footer** *{string}* -- text to write into the file after all pojos outputed  -- default = `null`
 > 
-
 ## inputs
 >- **pojos** -- pojos which data need to be written 
 
