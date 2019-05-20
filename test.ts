@@ -1,9 +1,8 @@
 /* eslint-disable no-template-curly-in-string */
 import { Testcase, Testbed } from 'pojoe/steps'
 import './DirectoryWalker'
+import './DirectoryWatcher'
 import * as fs from 'fs'
-
-
 
 function createtree() {
     // create folowwing dir tree
@@ -17,9 +16,9 @@ function createtree() {
     fs.existsSync('d:/tmp/b/c') || fs.mkdirSync('d:/tmp/b/c')
 
     // create <x>.txt file in each correspondig directory
-    fs.existsSync('d:/tmp/a/a.txt') || fs.writeFileSync('d:/tmp/a/a.txt','aaa file')
-    fs.existsSync('d:/tmp/b/b.txt') || fs.writeFileSync('d:/tmp/b/b.txt','bbb file')
-    fs.existsSync('d:/tmp/b/c/c.txt') || fs.writeFileSync('d:/tmp/b/c/c.txt','ccc file')
+    fs.existsSync('d:/tmp/a/a.txt') || fs.writeFileSync('d:/tmp/a/a.txt', 'aaa file')
+    fs.existsSync('d:/tmp/b/b.txt') || fs.writeFileSync('d:/tmp/b/b.txt', 'bbb file')
+    fs.existsSync('d:/tmp/b/c/c.txt') || fs.writeFileSync('d:/tmp/b/c/c.txt', 'ccc file')
 }
 
 function removetree() {
@@ -31,26 +30,11 @@ function removetree() {
     fs.existsSync('d:/tmp/a') && fs.rmdirSync('d:/tmp/a')
     fs.existsSync('d:/tmp/b') && fs.rmdirSync('d:/tmp/b')
     fs.existsSync('d:/tmp') && fs.rmdirSync('d:/tmp')
-    
+
 }
+removetree()
 const tests: Testcase[] = [
-    /*
-    {
-        stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
-        title: 'DirectoryWalker only files non recursive',
-        params: { 
-            directory: 'd:/tmp',
-            pattern: '.*',
-            recursive: 'false',
-            outdirs: 'false',
-            outfiles: 'true',
-        },
-        injected: {},
-        expected: { 'files': [
-            { 'pathname': 'd:\\tmp\\a\\a.txt', isdir:false, isfile:true}, 
-        ] },
-    },
-    */
+
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
         title: 'DirectoryWalker relative to project directory ',
@@ -65,6 +49,8 @@ const tests: Testcase[] = [
         expected: { 'files': [
             { 'pathname': '.vscode\\launch.json', isdir:false, isfile:true} 
         ] },
+        onstart: createtree,
+        onend: removetree
     },
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
@@ -82,6 +68,8 @@ const tests: Testcase[] = [
             { 'pathname': 'd:\\tmp\\b', isdir:true, isfile:false},
             { 'pathname': 'd:\\tmp\\b\\c', isdir:true, isfile:false}, 
         ] },
+        onstart: createtree,
+        onend: removetree
     },
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
@@ -99,6 +87,8 @@ const tests: Testcase[] = [
             { 'pathname': 'd:\\tmp\\b\\b.txt', isdir:false, isfile:true},
             { 'pathname': 'd:\\tmp\\b\\c\\c.txt', isdir:false, isfile:true}, 
         ] },
+        onstart: createtree,
+        onend: removetree
     },
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
@@ -114,16 +104,14 @@ const tests: Testcase[] = [
         expected: { 'files': [
             { 'pathname': 'd:\\tmp\\b\\c\\c.txt', isdir:false, isfile:true}, 
         ] },
+        onstart: createtree,
+        onend: removetree
     },
-
 ]
 
-removetree()
-createtree()
 Testbed.run(tests).then(() =>
-    removetree()
+    console.log('TEST TERMINATED')
 ).catch(() =>
-    removetree()
+    console.log('TEST TERMINATED')
 )
-setTimeout(() => console.log('10sec...'),10000)
 

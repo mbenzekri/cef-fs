@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable no-template-curly-in-string */
 const steps_1 = require("pojoe/steps");
 require("./DirectoryWalker");
+require("./DirectoryWatcher");
 const fs = require("fs");
 function createtree() {
     // create folowwing dir tree
@@ -28,24 +29,8 @@ function removetree() {
     fs.existsSync('d:/tmp/b') && fs.rmdirSync('d:/tmp/b');
     fs.existsSync('d:/tmp') && fs.rmdirSync('d:/tmp');
 }
+removetree();
 const tests = [
-    /*
-    {
-        stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
-        title: 'DirectoryWalker only files non recursive',
-        params: {
-            directory: 'd:/tmp',
-            pattern: '.*',
-            recursive: 'false',
-            outdirs: 'false',
-            outfiles: 'true',
-        },
-        injected: {},
-        expected: { 'files': [
-            { 'pathname': 'd:\\tmp\\a\\a.txt', isdir:false, isfile:true},
-        ] },
-    },
-    */
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
         title: 'DirectoryWalker relative to project directory ',
@@ -60,6 +45,8 @@ const tests = [
         expected: { 'files': [
                 { 'pathname': '.vscode\\launch.json', isdir: false, isfile: true }
             ] },
+        onstart: createtree,
+        onend: removetree
     },
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
@@ -77,6 +64,8 @@ const tests = [
                 { 'pathname': 'd:\\tmp\\b', isdir: true, isfile: false },
                 { 'pathname': 'd:\\tmp\\b\\c', isdir: true, isfile: false },
             ] },
+        onstart: createtree,
+        onend: removetree
     },
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
@@ -94,6 +83,8 @@ const tests = [
                 { 'pathname': 'd:\\tmp\\b\\b.txt', isdir: false, isfile: true },
                 { 'pathname': 'd:\\tmp\\b\\c\\c.txt', isdir: false, isfile: true },
             ] },
+        onstart: createtree,
+        onend: removetree
     },
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
@@ -109,10 +100,9 @@ const tests = [
         expected: { 'files': [
                 { 'pathname': 'd:\\tmp\\b\\c\\c.txt', isdir: false, isfile: true },
             ] },
+        onstart: createtree,
+        onend: removetree
     },
 ];
-removetree();
-createtree();
-steps_1.Testbed.run(tests).then(() => removetree()).catch(() => removetree());
-setTimeout(() => console.log('10sec...'), 10000);
+steps_1.Testbed.run(tests).then(() => console.log('TEST TERMINATED')).catch(() => console.log('TEST TERMINATED'));
 //# sourceMappingURL=test.js.map

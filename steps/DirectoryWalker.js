@@ -111,5 +111,7 @@ class DirectoryWalker extends steps_1.Step {
         });
     }
 }
-steps_1.Step.Register(declaration, (params) => new DirectoryWalker(params));
+DirectoryWalker.declaration = declaration;
+exports.DirectoryWalker = DirectoryWalker;
+steps_1.Step.register(DirectoryWalker);
 //# sourceMappingURL=DirectoryWalker.js.map

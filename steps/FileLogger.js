@@ -122,7 +122,7 @@ class FileLogger extends cef.Step {
         const dir = path.dirname(filename);
         try {
             // create the directory if not existing
-            if (createdir && !fs.existsSync(dir))
+            if (createdir && !existsSync(dir))
                 fs.mkdirSync(dir, { recursive: true });
         }
         catch (e) {

@@ -1,5 +1,6 @@
-import {Declaration, Step, ParamsMap} from 'pojoe/steps'
+import { Declaration, Step, ParamsMap } from 'pojoe/steps'
 import * as fs from 'fs'
+import * as path from 'path'
 
 const declaration: Declaration = {
     gitid: 'mbenzekri/pojoe-fs/steps/DirectoryWatcher',
@@ -18,6 +19,7 @@ const declaration: Declaration = {
                 "pathname": { type: 'string', title: 'path name of the file or directory' },
                 "isdir": { type: 'boolean', title: 'true if pathname is a directory' },
                 "isfile": { type: 'boolean', title: 'true if pathname is a file' },
+                "change": { type: 'string', title: 'nature of the change "created" or "deleted' },
             }
         }
     },
@@ -57,8 +59,12 @@ const declaration: Declaration = {
     }
 }
 
-class DirectoryWatcher extends Step {
-    streams: { [key: string]: fs.WriteStream } = {}
+export class DirectoryWatcher extends Step {
+    static readonly declaration = declaration
+    private streams: { [key: string]: fs.WriteStream } = {}
+    private watcher: fs.FSWatcher
+    private directory: string
+    private resolve: (value?: any) => any
     constructor(params: ParamsMap) {
         super(declaration, params)
     }
@@ -71,30 +77,41 @@ class DirectoryWatcher extends Step {
      */
 
     async doit() {
-        const directory = this.params.directory
-        process.on('SIGINT', () => {
-            console.log("!!! Caught interrupt signal");
-            process.exit();
-        });
-
-        return new Promise(() => {
-            fs.watch(directory, (event: string, who: any) => {
-                if (event === 'rename') {
-                    const filename = `${directory}/${who}`
-                    const exists = fs.existsSync(filename)
-                    const change = exists ? 'create' : 'delete'
-                    const stat = fs.statSync(filename)
-                    const isdir = stat.isDirectory
-                    const isfile = stat.isFile
-                    const pojo = { filename, change, isdir, isfile }
-                    if (this.params.pattern.test(filename)) {
-                        if (this.params.created && exists) this.output("files", pojo)
-                        if (this.params.deleted && !exists) this.output("files", pojo)
+        this.directory = this.params.directory
+        await new Promise((resolve) => {
+            this.resolve = resolve
+            this.watcher = fs.watch(this.directory, (event: string, who: any) => {
+                try {
+                    if (event === 'rename') {
+                        const filename = path.join(this.directory, who)
+                        let exists = false
+                        exists = fs.existsSync(filename)
+                        const change = exists ? 'create' : 'delete'
+                        let isdir:boolean = false
+                        let isfile:boolean = false
+                        if (exists) {
+                            const stat = fs.statSync(filename)
+                            isdir = stat.isDirectory()
+                            isfile = stat.isFile()
+                        }
+                        const pojo = { filename, change, isdir, isfile }
+                        if (this.params.pattern.test(filename)) {
+                            if (this.params.created && exists)  this.output("files", pojo)
+                            if (this.params.deleted && !exists) this.output("files", pojo)
+                        }
                     }
+                } catch (e) {
+                    this.log(`${this}: ERROR during watch due to ${e.message}`)
                 }
             })
+            this.debug(`Start DirectoryWatcher over directory :${this.directory}`)
         })
+    }
+    stop() {
+        this.debug(`Ending DirectoryWatcher over directory :${this.directory}`)
+        this.watcher && this.watcher.close();
+        this.resolve && this.resolve();
     }
 }
 
-Step.Register(declaration,(params: ParamsMap): Step =>new DirectoryWatcher(params) )
+Step.register(DirectoryWatcher)

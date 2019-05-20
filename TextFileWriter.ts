@@ -2,7 +2,7 @@ import { Step, Declaration, ParamsMap , EOP} from 'pojoe/steps'
 import * as path from 'path'
 import * as fs from 'fs'
 
-export const declaration: Declaration = {
+const declaration: Declaration = {
     gitid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
     title: 'write data from pojos to a file',
     desc: 'this step writes user formated data in a text file for each inputed pojo',
@@ -60,6 +60,7 @@ export const declaration: Declaration = {
 }
 
 class TextFileWriter extends Step {
+    static readonly declaration = declaration
     streams: { [key:string]: fs.WriteStream } = {}
     constructor (params: ParamsMap) {
         super(declaration, params)
@@ -131,4 +132,4 @@ class TextFileWriter extends Step {
     }
 }
 
-Step.Register(declaration, (params: ParamsMap) : Step  => new TextFileWriter(params))
+Step.register(TextFileWriter)

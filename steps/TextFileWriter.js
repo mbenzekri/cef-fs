@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const steps_1 = require("pojoe/steps");
 const path = require("path");
 const fs = require("fs");
-exports.declaration = {
+const declaration = {
     gitid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
     title: 'write data from pojos to a file',
     desc: 'this step writes user formated data in a text file for each inputed pojo',
@@ -69,7 +69,7 @@ exports.declaration = {
 };
 class TextFileWriter extends steps_1.Step {
     constructor(params) {
-        super(exports.declaration, params);
+        super(declaration, params);
         this.streams = {};
     }
     /**
@@ -143,5 +143,6 @@ class TextFileWriter extends steps_1.Step {
         return stream;
     }
 }
-steps_1.Step.Register(exports.declaration, (params) => new TextFileWriter(params));
+TextFileWriter.declaration = declaration;
+steps_1.Step.register(TextFileWriter);
 //# sourceMappingURL=TextFileWriter.js.map

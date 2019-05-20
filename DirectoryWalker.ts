@@ -66,7 +66,8 @@ const declaration: Declaration = {
 }
 
 
-class DirectoryWalker extends Step {
+export class DirectoryWalker extends Step {
+    static readonly declaration = declaration
     constructor(params: ParamsMap) {
         super(declaration, params)
     }
@@ -101,4 +102,4 @@ class DirectoryWalker extends Step {
     }
 }
 
-Step.Register(declaration, (params: ParamsMap): Step => new DirectoryWalker(params))
+Step.register(DirectoryWalker)

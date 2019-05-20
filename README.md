@@ -104,6 +104,7 @@
 >>- **pathname** *{string}* -- path name of the file or directory
 >>- **isdir** *{boolean}* -- true if pathname is a directory
 >>- **isfile** *{boolean}* -- true if pathname is a file
+>>- **change** *{string}* -- nature of the change "created" or "deleted
 
 
 ---
