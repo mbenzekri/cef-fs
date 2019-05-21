@@ -23,7 +23,7 @@
 ---
 ## parameters
 > **directory** *{string}* -- directory pathname to walk  -- default = `c:/tmp`
-> <center>
+> <div>
 >| Value | Description | 
 >|-------|-------------| 
 >|`c:/tmp`| set parameter directory to a constant |
@@ -44,7 +44,7 @@
 > **outdirs** *{boolean}* -- if true output directories  -- default = `true`
 > 
 > **outfiles** *{boolean}* -- if true output files  -- default = `true`
-> </center>
+> </div>
 
 ## outputs
 >- **files** -- for each selected file or directory a pojo is outputed through this port 
