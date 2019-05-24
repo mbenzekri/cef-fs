@@ -9,5 +9,5 @@ export declare class DirectoryWalker extends Step {
      * @param {RegExp} extension : the extension list filter
      */
     walk(dir: string, filter: RegExp, recursive: boolean, outdirs: boolean, outfiles: boolean): Promise<void>;
-    doit(): Promise<void>;
+    process(): Promise<void>;
 }

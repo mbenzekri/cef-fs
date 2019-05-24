@@ -80,7 +80,7 @@ class TextFileWriter extends steps_1.Step {
      */
     end() {
         return __awaiter(this, void 0, void 0, function* () {
-            for (let filename in Object.keys(this.streams)) {
+            for (let filename of Object.keys(this.streams)) {
                 yield this.output('files', { filename });
             }
             Object.keys(this.streams).forEach(filename => {
@@ -93,20 +93,14 @@ class TextFileWriter extends steps_1.Step {
             });
         });
     }
-    doit() {
+    input(inport, pojo) {
         return __awaiter(this, void 0, void 0, function* () {
-            let pojo = yield this.input('pojos');
-            while (pojo !== steps_1.EOP) {
-                const filename = this.params.filename;
-                const textline = this.params.textline;
-                const stream = this.getstream(filename);
-                if (stream !== null) {
-                    stream.write(`${textline}\n`, err => {
-                        err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
-                    });
-                }
-                pojo = yield this.input('pojos');
-            }
+            const filename = this.params.filename;
+            const textline = this.params.textline;
+            const stream = this.getstream(filename);
+            stream && stream.write(`${textline}\n`, err => {
+                err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
+            });
         });
     }
     /**

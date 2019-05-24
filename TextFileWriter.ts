@@ -1,4 +1,4 @@
-import { Step, Declaration, ParamsMap , EOP} from 'pojoe/steps'
+import { Step, Declaration, ParamsMap, EOP } from 'pojoe/steps'
 import * as path from 'path'
 import * as fs from 'fs'
 
@@ -53,7 +53,7 @@ const declaration: Declaration = {
         'files': {
             title: 'files produced',
             properties: {
-                filename: { type:'string', title: 'created filename'}
+                filename: { type: 'string', title: 'created filename' }
             }
         }
     },
@@ -61,8 +61,8 @@ const declaration: Declaration = {
 
 class TextFileWriter extends Step {
     static readonly declaration = declaration
-    streams: { [key:string]: fs.WriteStream } = {}
-    constructor (params: ParamsMap) {
+    streams: { [key: string]: fs.WriteStream } = {}
+    constructor(params: ParamsMap) {
         super(declaration, params)
     }
 
@@ -72,34 +72,30 @@ class TextFileWriter extends Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter 
      */
-   
+
     async end() {
-        for (let filename in Object.keys(this.streams)) {
-            await this.output('files',{filename})
+        for (let filename of Object.keys(this.streams)) {
+            await this.output('files', { filename })
         }
         Object.keys(this.streams).forEach(filename => {
-            const stream = this.streams[filename] 
-            stream.write(this.params.footer,err => {
+            const stream = this.streams[filename]
+            stream.write(this.params.footer, err => {
                 err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
                 if (stream) stream.end()
             })
-    
+
         })
     }
-    async doit() {
-        let pojo = await this.input('pojos') 
-        while (pojo !== EOP) {
-            const filename = this.params.filename
-            const textline = this.params.textline
-            const stream = this.getstream(filename)
-            if (stream !== null) {
-                stream.write(`${textline}\n`,err => {
-                    err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
-                })
-            }
-            pojo = await this.input('pojos') 
-        }
+
+    async input(inport: string, pojo: any) {
+        const filename = this.params.filename
+        const textline = this.params.textline
+        const stream = this.getstream(filename)
+        stream && stream.write(`${textline}\n`, err => {
+            err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
+        })
     }
+
     /**
      * manage a pool of streams for multiple opened files for output
      * @param filename filename to get writestrem
@@ -112,19 +108,19 @@ class TextFileWriter extends Step {
         const dir = path.dirname(filename)
         try {
             // create the directory if not existing
-            if (createdir && !fs.existsSync(dir)) fs.mkdirSync(dir, {recursive:true})
-        } catch(e){
+            if (createdir && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+        } catch (e) {
             this.streams[filename] = null;
             this.error(`unable to create directory  ${dir} due to => ${e.message}`)
         }
         // create vs append to the file 
-        const stream = fs.createWriteStream(filename, {flags, encoding:'utf8'}) 
+        const stream = fs.createWriteStream(filename, { flags, encoding: 'utf8' })
         stream.on('error', err => {
             stream.end();
             this.streams[filename] = null
             this.error(`unable to open file ${filename} due to => ${err.message}`)
         });
-        stream.write(this.params.header,err => {
+        stream.write(this.params.header, err => {
             err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
         })
         this.streams[filename] = stream

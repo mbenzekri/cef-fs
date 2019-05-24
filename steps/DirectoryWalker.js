@@ -95,19 +95,19 @@ class DirectoryWalker extends steps_1.Step {
                     isfile && outfiles && filter.test(pathname) && (yield this.output('files', { pathname, isdir, isfile }));
                     isdir && outdirs && filter.test(pathname) && (yield this.output('files', { pathname, isdir, isfile }));
                     if (isdir && recursive)
-                        this.walk(pathname, filter, recursive, outdirs, outfiles);
+                        yield this.walk(pathname, filter, recursive, outdirs, outfiles);
                 }
             }
         });
     }
-    doit() {
+    process() {
         return __awaiter(this, void 0, void 0, function* () {
             const directory = this.params.directory;
             const filter = this.params.pattern;
             const recursive = this.params.recursive;
             const outdirs = this.params.outdirs;
             const outfiles = this.params.outfiles;
-            return this.walk(directory, filter, recursive, outdirs, outfiles);
+            return yield this.walk(directory, filter, recursive, outdirs, outfiles);
         });
     }
 }

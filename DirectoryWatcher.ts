@@ -76,7 +76,7 @@ export class DirectoryWatcher extends Step {
      * @param {RegExp} extensions : the extension list filter 
      */
 
-    async doit() {
+    async process() {
         this.directory = this.params.directory
         await new Promise((resolve) => {
             this.resolve = resolve
@@ -107,7 +107,7 @@ export class DirectoryWatcher extends Step {
             this.debug(`Start DirectoryWatcher over directory :${this.directory}`)
         })
     }
-    stop() {
+    kill() {
         this.debug(`Ending DirectoryWatcher over directory :${this.directory}`)
         this.watcher && this.watcher.close();
         this.resolve && this.resolve();

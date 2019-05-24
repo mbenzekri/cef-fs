@@ -12,6 +12,6 @@ export declare class DirectoryWatcher extends Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter
      */
-    doit(): Promise<void>;
-    stop(): void;
+    process(): Promise<void>;
+    kill(): void;
 }

@@ -78,7 +78,7 @@ class DirectoryWatcher extends steps_1.Step {
      * @param {RegExp} pattern : the pattern filter
      * @param {RegExp} extensions : the extension list filter
      */
-    doit() {
+    process() {
         return __awaiter(this, void 0, void 0, function* () {
             this.directory = this.params.directory;
             yield new Promise((resolve) => {
@@ -114,7 +114,7 @@ class DirectoryWatcher extends steps_1.Step {
             });
         });
     }
-    stop() {
+    kill() {
         this.debug(`Ending DirectoryWatcher over directory :${this.directory}`);
         this.watcher && this.watcher.close();
         this.resolve && this.resolve();

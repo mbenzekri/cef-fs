@@ -88,17 +88,17 @@ export class DirectoryWalker extends Step {
             if (isfile || isdir) { 
                 isfile && outfiles && filter.test(pathname) && await this.output('files', { pathname, isdir, isfile })
                 isdir && outdirs && filter.test(pathname) && await this.output('files', { pathname, isdir, isfile })
-                if (isdir && recursive) this.walk(pathname, filter, recursive, outdirs, outfiles)
+                if (isdir && recursive) await this.walk(pathname, filter, recursive, outdirs, outfiles)
             }
         }
     }
-    async doit() {
+    async process() {
         const directory = this.params.directory
         const filter = this.params.pattern
         const recursive = this.params.recursive
         const outdirs = this.params.outdirs
         const outfiles = this.params.outfiles
-        return this.walk(directory, filter, recursive, outdirs, outfiles)
+        return await this.walk(directory, filter, recursive, outdirs, outfiles)
     }
 }
 

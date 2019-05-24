@@ -2,6 +2,7 @@
 import { Testcase, Testbed } from 'pojoe/steps'
 import './DirectoryWalker'
 import './DirectoryWatcher'
+import './TextFileWriter'
 import * as fs from 'fs'
 
 function createtree() {
@@ -22,6 +23,7 @@ function createtree() {
 }
 
 function removetree() {
+    fs.existsSync('d:/tmp/tfw.txt') && fs.unlinkSync('d:/tmp/tfw.txt')
     fs.existsSync('d:/tmp/a/a.txt') && fs.unlinkSync('d:/tmp/a/a.txt')
     fs.existsSync('d:/tmp/b/b.txt') && fs.unlinkSync('d:/tmp/b/b.txt')
     fs.existsSync('d:/tmp/b/c/c.txt') && fs.unlinkSync('d:/tmp/b/c/c.txt')
@@ -34,13 +36,12 @@ function removetree() {
 }
 removetree()
 const tests: Testcase[] = [
-
     {
         stepid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
         title: 'DirectoryWalker relative to project directory ',
         params: { 
             directory: '.vscode',
-            pattern: '.*',
+            pattern: '/.*/i',
             recursive: 'true',
             outdirs: 'true',
             outfiles: 'true',
@@ -57,7 +58,7 @@ const tests: Testcase[] = [
         title: 'DirectoryWalker only directories ',
         params: { 
             directory: 'd:/tmp',
-            pattern: '.*',
+            pattern: '/.*/i',
             recursive: 'true',
             outdirs: 'true',
             outfiles: 'false',
@@ -76,7 +77,7 @@ const tests: Testcase[] = [
         title: 'DirectoryWalker only files ',
         params: { 
             directory: 'd:/tmp',
-            pattern: '.*',
+            pattern: '/.*/i',
             recursive: 'true',
             outdirs: 'false',
             outfiles: 'true',
@@ -95,7 +96,7 @@ const tests: Testcase[] = [
         title: 'DirectoryWalker with pattern matching',
         params: { 
             directory: 'd:/tmp',
-            pattern: '[c].txt',
+            pattern: '/[c].txt/i',
             recursive: 'true',
             outdirs: 'false',
             outfiles: 'true',
@@ -107,7 +108,29 @@ const tests: Testcase[] = [
         onstart: createtree,
         onend: removetree
     },
+    {
+        stepid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
+        title: 'TextFileWriter 3 pojos',
+        params: { 
+            filename: 'd:\\tmp\\tfw.txt',
+            createdir: 'true',
+            append: 'false',
+            textline: '${pojo.a},${pojo.b},${pojo.c}',
+            header: '----> HEADER\n',
+            footer: '----> FOOTER\n',
+        },
+        injected: {pojos : [
+            {a:1, b:"hello", c: true},
+            {a:1, b:"bye", c: true},
+        ]},
+        expected: { files: [
+            { filename: 'd:\\tmp\\tfw.txt'} , 
+        ]},
+        onstart: createtree,
+        onend: removetree
+    },
 ]
+
 
 Testbed.run(tests).then(() =>
     console.log('TEST TERMINATED')
