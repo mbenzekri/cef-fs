@@ -127,5 +127,5 @@ const tests = [
         onend: removetree
     },
 ];
-steps_1.Testbed.run(tests, true).then(() => console.log('TEST TERMINATED')).catch(() => console.log('TEST TERMINATED'));
+steps_1.Testbed.run(tests).then(() => console.log('TEST TERMINATED')).catch(() => console.log('TEST TERMINATED'));
 //# sourceMappingURL=test.js.map
