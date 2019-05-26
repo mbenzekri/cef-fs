@@ -12,11 +12,24 @@ const declaration: Declaration = {
         "allow file create or append mode",
         "allow header and footer output",
     ],
+    inputs: {
+        'pojos': {
+            title: 'pojos which data need to be written'
+        }
+    },
+    outputs: {
+        'files': {
+            title: 'files produced',
+            properties: {
+                filename: { type: 'string', title: 'created filename' }
+            }
+        }
+    },
     parameters: {
         'filename': {
             title: 'the path and file name to write',
             type: 'string',
-            default: 'c:/tmp/myfile.log'
+            default: '/tmp/myfile.log'
         },
         'createdir': {
             title: 'if true create the missing directories',
@@ -34,28 +47,20 @@ const declaration: Declaration = {
             default: '${JSON.stringify(pojo)}',
         },
         'header': {
-            title: 'text to write into the file before pojo outputing',
+            title: 'text to write into the file before firt <textline> output',
             type: 'string',
-            default: null
+            default: "[\n"
+        },
+        'separator': {
+            title: 'text to separate each outputed <textline>',
+            type: 'string',
+            default: '\n'
         },
         'footer': {
-            title: 'text to write into the file after all pojos outputed',
+            title: 'text to write to the file after all outputed <textline> ',
             type: 'string',
-            default: null
+            default: "]\n"
         },
-    },
-    inputs: {
-        'pojos': {
-            title: 'pojos which data need to be written'
-        }
-    },
-    outputs: {
-        'files': {
-            title: 'files produced',
-            properties: {
-                filename: { type: 'string', title: 'created filename' }
-            }
-        }
     },
 }
 
@@ -90,9 +95,13 @@ class TextFileWriter extends Step {
     async input(inport: string, pojo: any) {
         const filename = this.params.filename
         const textline = this.params.textline
+        const separator = this.params.separator
         const stream = this.getstream(filename)
-        stream && stream.write(`${textline}\n`, err => {
+        stream && stream.write(textline, err => {
             err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
+            stream && stream.write(separator, err => {
+                err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
+            })
         })
     }
 

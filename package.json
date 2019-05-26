@@ -5,7 +5,12 @@
     "description": "this module provides steps for files and directories management",
     "main": "./steps/tests.js",
     "config": {
-        "steps": ["DirectoryWalker", "DirectoryWatcher", "TextFileWriter"]        
+        "steps": [
+            "DirectoryWalker",
+            "DirectoryWatcher",
+            "TextFileWriter",
+            "TextFileReader"
+        ]
     },
     "scripts": {
         "build": "tsc",
@@ -26,7 +31,7 @@
     "homepage": "https://github.com/mbenzekri/pojoe-fs#readme",
     "dependencies": {},
     "devDependencies": {
-        "@types/node": "^12.0.1"
+        "@types/node": "^12.0.2"
     },
     "peerDependencies": {
         "pojoe": "github:mbenzekri/pojoe"

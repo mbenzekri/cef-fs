@@ -9,6 +9,7 @@
 >- [DirectoryWalker](#directorywalker-directory-tree-recursive-walk) : directory tree recursive walk
 >- [DirectoryWatcher](#directorywatcher-directory-change-watcher-step) : directory change watcher step
 >- [TextFileWriter](#textfilewriter-write-data-from-pojos-to-a-file) : write data from pojos to a file
+>- [TextFileReader](#textfilereader-reads-data-from-a-file) : reads data from a file
 # DirectoryWalker directory tree recursive walk
 >
 
@@ -113,7 +114,7 @@
 
 ---
 ## parameters
-> **filename** *{string}* -- the path and file name to write  -- default = `c:/tmp/myfile.log`
+> **filename** *{string}* -- the path and file name to write  -- default = `/tmp/myfile.log`
 > 
 > **createdir** *{boolean}* -- if true create the missing directories  -- default = `true`
 > 
@@ -121,9 +122,14 @@
 > 
 > **textline** *{string}* -- the text to be written on the file for each pojo  -- default = `${JSON.stringify(pojo)}`
 > 
-> **header** *{string}* -- text to write into the file before pojo outputing  -- default = `null`
+> **header** *{string}* -- text to write into the file before firt <textline> output  -- default = `[
+`
 > 
-> **footer** *{string}* -- text to write into the file after all pojos outputed  -- default = `null`
+> **separator** *{string}* -- text to separate each outputed <textline>  -- default = `
+`
+> 
+> **footer** *{string}* -- text to write to the file after all outputed <textline>   -- default = `]
+`
 > 
 ## inputs
 >- **pojos** -- pojos which data need to be written 
@@ -132,6 +138,39 @@
 >- **files** -- files produced 
 >> provided properties: 
 >>- **filename** *{string}* -- created filename
+
+
+---
+
+# TextFileReader reads data from a file
+>
+
+## goal
+
+>this step read  a file line by line and output a pojo for each line
+>- allow construct a pojo from line parsing 
+>- allow input regexp splitting 
+>- allow header skiping 
+
+---
+## parameters
+> **filename** *{string}* -- text file pathname  -- default = `/tmp/myfile.txt`
+> 
+> **encoding** *{string}* -- encoding of the files to read  -- default = `utf-8`
+> 
+> **skip** *{int}* -- number of line to skip  -- default = `1`
+> 
+> **splitter** *{regexp}* -- regexp grouping pattern to split the line  -- default = `/^(.*)$/i`
+> 
+> **pojo** *{json}* -- the json pojo to output  -- default = `{ "line" : "${this.match[1]}" }`
+> 
+## inputs
+>- **files** -- files produced 
+>> expected properties: 
+>>- **filename** *{path}* -- created filename
+
+## outputs
+>- **pojos** -- pojos which data need to be written 
 
 
 ---

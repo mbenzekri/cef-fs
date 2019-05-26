@@ -12,67 +12,51 @@ const steps_1 = require("pojoe/steps");
 const path = require("path");
 const fs = require("fs");
 const declaration = {
-    gitid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
-    title: 'write data from pojos to a file',
-    desc: 'this step writes user formated data in a text file for each inputed pojo',
+    gitid: 'mbenzekri/pojoe-fs/steps/TextFileReader',
+    title: 'reads data from a file',
+    desc: 'this step read  a file line by line and output a pojo for each line',
     features: [
-        "allow writing some data for each pojo inputed",
-        "allow full directory path creation if missing",
-        "allow file create or append mode",
-        "allow header and footer output",
+        "allow construct a pojo from line parsing",
+        "allow input regexp splitting",
+        "allow header skiping",
     ],
+    parameters: {
+        'filename': {
+            title: 'text file pathname',
+            type: 'path',
+            default: 'c:/tmp/myfile.txt'
+        },
+        'skip': {
+            title: 'number of line to skip',
+            type: 'int',
+            default: '0'
+        },
+        'pattern': {
+            title: 'regexp grouping pattern to split the line',
+            type: 'regexp',
+            default: 'true',
+        },
+        'pojo ': {
+            title: 'the json pojo to output',
+            type: 'json',
+            default: 'true',
+        },
+    },
     inputs: {
+        'files': {
+            title: 'files produced',
+            properties: {
+                filename: { type: 'path', title: 'created filename' }
+            }
+        }
+    },
+    outputs: {
         'pojos': {
             title: 'pojos which data need to be written'
         }
     },
-    outputs: {
-        'files': {
-            title: 'files produced',
-            properties: {
-                filename: { type: 'string', title: 'created filename' }
-            }
-        }
-    },
-    parameters: {
-        'filename': {
-            title: 'the path and file name to write',
-            type: 'string',
-            default: '/tmp/myfile.log'
-        },
-        'createdir': {
-            title: 'if true create the missing directories',
-            type: 'boolean',
-            default: 'true',
-        },
-        'append': {
-            title: 'if true and file exists append ',
-            type: 'boolean',
-            default: 'true',
-        },
-        'textline': {
-            title: 'the text to be written on the file for each pojo',
-            type: 'string',
-            default: '${JSON.stringify(pojo)}',
-        },
-        'header': {
-            title: 'text to write into the file before firt <textline> output',
-            type: 'string',
-            default: "[\n"
-        },
-        'separator': {
-            title: 'text to separate each outputed <textline>',
-            type: 'string',
-            default: '\n'
-        },
-        'footer': {
-            title: 'text to write to the file after all outputed <textline> ',
-            type: 'string',
-            default: "]\n"
-        },
-    },
 };
-class TextFileWriter extends steps_1.Step {
+class TextFileReader extends steps_1.Step {
     constructor(params) {
         super(declaration, params);
         this.streams = {};
@@ -102,13 +86,9 @@ class TextFileWriter extends steps_1.Step {
         return __awaiter(this, void 0, void 0, function* () {
             const filename = this.params.filename;
             const textline = this.params.textline;
-            const separator = this.params.separator;
             const stream = this.getstream(filename);
-            stream && stream.write(textline, err => {
+            stream && stream.write(`${textline}\n`, err => {
                 err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
-                stream && stream.write(separator, err => {
-                    err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
-                });
             });
         });
     }
@@ -146,6 +126,6 @@ class TextFileWriter extends steps_1.Step {
         return stream;
     }
 }
-TextFileWriter.declaration = declaration;
-steps_1.Step.register(TextFileWriter);
-//# sourceMappingURL=TextFileWriter.js.map
+TextFileReader.declaration = declaration;
+steps_1.Step.register(TextFileReader);
+//# sourceMappingURL=TextFileReader.1.js.map
