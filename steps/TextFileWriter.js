@@ -78,41 +78,6 @@ class TextFileWriter extends steps_1.Step {
         this.streams = {};
     }
     /**
-     * walk recursively a directory and output files mattching pattern and in extension list
-     * @param {string} dir : the directory to walk
-     * @param {RegExp} pattern : the pattern filter
-     * @param {RegExp} extensions : the extension list filter
-     */
-    end() {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (let filename of Object.keys(this.streams)) {
-                yield this.output('files', { filename });
-            }
-            Object.keys(this.streams).forEach(filename => {
-                const stream = this.streams[filename];
-                stream.write(this.params.footer, err => {
-                    err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
-                    if (stream)
-                        stream.end();
-                });
-            });
-        });
-    }
-    input(inport, pojo) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const filename = this.params.filename;
-            const textline = this.params.textline;
-            const separator = this.params.separator;
-            const stream = this.getstream(filename);
-            stream && stream.write(textline, err => {
-                err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
-                stream && stream.write(separator, err => {
-                    err && this.error(`unable to write to file ${filename} due to => ${err.message}`);
-                });
-            });
-        });
-    }
-    /**
      * manage a pool of streams for multiple opened files for output
      * @param filename filename to get writestrem
      */
@@ -144,6 +109,60 @@ class TextFileWriter extends steps_1.Step {
         });
         this.streams[filename] = stream;
         return stream;
+    }
+    /**
+     *
+     * @param inport  the output port ( on port "pojos" declared)
+     * @param pojo the pojo to wrtie to the text file
+     */
+    input(inport, pojo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                const filename = this.params.filename;
+                const textline = this.params.textline;
+                const separator = this.params.separator;
+                const stream = this.getstream(filename);
+                stream && stream.write(textline, err => {
+                    err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`));
+                    stream && stream.write(separator, err => {
+                        err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`));
+                        resolve();
+                    });
+                });
+            });
+        });
+    }
+    /**
+     * all the mainwrite process is done in input() method
+     * process() method only write footers and close the stream pool
+     */
+    process() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                const keys = Object.keys(this.streams);
+                let count = 0;
+                keys.forEach(filename => {
+                    const stream = this.streams[filename];
+                    stream.write(this.params.footer, err => {
+                        err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`));
+                        if (stream)
+                            stream.close();
+                        if (++count >= keys.length)
+                            resolve();
+                    });
+                });
+            });
+        });
+    }
+    /**
+     * output all the filename outputed
+     */
+    end() {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let filename of Object.keys(this.streams)) {
+                yield this.output('files', { filename });
+            }
+        });
     }
 }
 TextFileWriter.declaration = declaration;

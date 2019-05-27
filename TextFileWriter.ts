@@ -1,6 +1,7 @@
 import { Step, Declaration, ParamsMap, EOP } from 'pojoe/steps'
 import * as path from 'path'
 import * as fs from 'fs'
+import { resolve } from 'url';
 
 const declaration: Declaration = {
     gitid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
@@ -72,40 +73,6 @@ class TextFileWriter extends Step {
     }
 
     /**
-     * walk recursively a directory and output files mattching pattern and in extension list
-     * @param {string} dir : the directory to walk
-     * @param {RegExp} pattern : the pattern filter
-     * @param {RegExp} extensions : the extension list filter 
-     */
-
-    async end() {
-        for (let filename of Object.keys(this.streams)) {
-            await this.output('files', { filename })
-        }
-        Object.keys(this.streams).forEach(filename => {
-            const stream = this.streams[filename]
-            stream.write(this.params.footer, err => {
-                err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
-                if (stream) stream.end()
-            })
-
-        })
-    }
-
-    async input(inport: string, pojo: any) {
-        const filename = this.params.filename
-        const textline = this.params.textline
-        const separator = this.params.separator
-        const stream = this.getstream(filename)
-        stream && stream.write(textline, err => {
-            err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
-            stream && stream.write(separator, err => {
-                err && this.error(`unable to write to file ${filename} due to => ${err.message}`)
-            })
-        })
-    }
-
-    /**
      * manage a pool of streams for multiple opened files for output
      * @param filename filename to get writestrem
      */
@@ -135,6 +102,56 @@ class TextFileWriter extends Step {
         this.streams[filename] = stream
         return stream
     }
+
+    /**
+     * 
+     * @param inport  the output port ( on port "pojos" declared)
+     * @param pojo the pojo to wrtie to the text file
+     */
+    async input(inport: string, pojo: any) {
+        return new Promise((resolve,reject) => {
+            const filename = this.params.filename
+            const textline = this.params.textline
+            const separator = this.params.separator
+            const stream = this.getstream(filename)
+            stream && stream.write(textline, err => {
+                err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`))
+                stream && stream.write(separator, err => {
+                    err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`))
+                    resolve()
+                })
+            })    
+        })
+    }
+
+    /**
+     * all the mainwrite process is done in input() method
+     * process() method only write footers and close the stream pool  
+     */
+    async process() {
+        return new Promise((resolve,reject) => {
+            const keys = Object.keys(this.streams);
+            let count = 0;
+            keys.forEach(filename => {
+                const stream = this.streams[filename]
+                stream.write(this.params.footer, err => {
+                    err && reject (new Error(`unable to write to file ${filename} due to => ${err.message}`))
+                    if (stream) stream.close()
+                    if (++count >= keys.length) resolve()
+                })
+            })
+        })
+    }
+
+    /**
+     * output all the filename outputed
+     */
+    async end() {
+        for (let filename of Object.keys(this.streams)) {
+            await this.output('files', { filename })
+        }
+    }
+
 }
 
 Step.register(TextFileWriter)

@@ -148,29 +148,28 @@
 ## goal
 
 >this step read  a file line by line and output a pojo for each line
->- allow construct a pojo from line parsing 
->- allow input regexp splitting 
->- allow header skiping 
+>- allow  multiple filenames from input or single filename from parameter 
+>- allow pojo construction from parsed inputed text line 
+>- allow input text line regexp parsing/splitting 
+>- allow header lines skiping 
 
 ---
 ## parameters
-> **filename** *{string}* -- text file pathname  -- default = `/tmp/myfile.txt`
+> **filename** *{string}* -- text file pathname to read  -- default = `/tmp/myfile.txt`
 > 
 > **encoding** *{string}* -- encoding of the files to read  -- default = `utf-8`
 > 
 > **skip** *{int}* -- number of line to skip  -- default = `1`
 > 
-> **splitter** *{regexp}* -- regexp grouping pattern to split the line  -- default = `/^(.*)$/i`
+> **splitter** *{regexp}* -- regexp grouping pattern to parse the line use local var "match" to get parsed result  -- default = `/^(.*)$/i`
 > 
 > **pojo** *{json}* -- the json pojo to output  -- default = `{ "line" : "${this.match[1]}" }`
 > 
 ## inputs
->- **files** -- files produced 
->> expected properties: 
->>- **filename** *{path}* -- created filename
+>- **files** -- files to read 
 
 ## outputs
->- **pojos** -- pojos which data need to be written 
+>- **pojos** -- pojos read from files 
 
 
 ---

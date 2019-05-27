@@ -16,26 +16,27 @@ const declaration = {
     title: 'reads data from a file',
     desc: 'this step read  a file line by line and output a pojo for each line',
     features: [
-        "allow construct a pojo from line parsing",
-        "allow input regexp splitting",
-        "allow header skiping",
+        "allow  multiple filenames from input or single filename from parameter",
+        "allow pojo construction from parsed inputed text line",
+        "allow input text line regexp parsing/splitting",
+        "allow header lines skiping",
     ],
+    locals: {
+        'match': { type: 'any[]', title: 'math produced by params.splitter parsing for each text line' }
+    },
     inputs: {
         'files': {
-            title: 'files produced',
-            properties: {
-                filename: { type: 'path', title: 'created filename' }
-            }
+            title: 'files to read',
         }
     },
     outputs: {
         'pojos': {
-            title: 'pojos which data need to be written'
+            title: 'pojos read from files'
         }
     },
     parameters: {
         'filename': {
-            title: 'text file pathname',
+            title: 'text file pathname to read',
             type: 'string',
             default: '/tmp/myfile.txt'
         },
@@ -51,7 +52,7 @@ const declaration = {
             default: '1'
         },
         'splitter': {
-            title: 'regexp grouping pattern to split the line',
+            title: 'regexp grouping pattern to parse the line use local var "match" to get parsed result',
             type: 'regexp',
             default: '/^(.*)$/i',
         },
@@ -65,11 +66,17 @@ const declaration = {
 class TextFileReader extends steps_1.Step {
     constructor(params) {
         super(declaration, params);
-        this.count = 0;
         this.locals.match = [];
     }
+    /**
+     * either with a pojo input or without pojo input
+     *  - construct a file name through params.filename,
+     *  - parse with params.splitter ans set this.match local var
+     *  - and output resulted pojos contructed by params.pojo
+     */
     read() {
         return __awaiter(this, void 0, void 0, function* () {
+            let count = 0;
             const filename = this.params.filename;
             const re = this.params.splitter;
             const skip = this.params.skip;
@@ -101,8 +108,8 @@ class TextFileReader extends steps_1.Step {
                 crlfDelay: Infinity
             });
             rl.on('line', (line) => {
-                this.count++;
-                if (this.count > skip) {
+                count++;
+                if (count > skip) {
                     this.locals.match = re.exec(line);
                     this.output('pojos', this.params.pojo);
                 }
@@ -110,17 +117,24 @@ class TextFileReader extends steps_1.Step {
             return promise;
         });
     }
+    /**
+     * process inputed file names from port "files"
+     * @param inport only "files" input port
+     * @param pojo pojo files (params.filename usualy constructed with this data)
+     */
     input(inport, pojo) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.read();
         });
     }
+    /**
+     * if port "files" not connected get a unique filename from params.filename
+     */
     process() {
         return __awaiter(this, void 0, void 0, function* () {
-            // if data was inputed from 'files' (this.count > 0)
-            // all is done during input() nothing to be done
-            if (this.count == 0)
-                yield this.read();
+            // if port 'files is not connect 
+            // get only one file name from params.filename and read the file
+            !this.inconnected('files') && (yield this.read());
         });
     }
 }
