@@ -95,14 +95,6 @@ class TextFileReader extends steps_1.Step {
             catch (e) {
                 this.error(`unable to open file to read ${filename} due to => ${e.message}`);
             }
-            fileStream.on('error', err => {
-                fileStream.close();
-                reject && reject(new Error(`error when reading file  ${filename} due to => ${err.message}`));
-            });
-            fileStream.on('end', err => {
-                fileStream.close();
-                resolve && resolve();
-            });
             const rl = readline.createInterface({
                 input: fileStream,
                 crlfDelay: Infinity
@@ -113,6 +105,13 @@ class TextFileReader extends steps_1.Step {
                     this.locals.match = re.exec(line);
                     this.output('pojos', this.params.pojo);
                 }
+            });
+            rl.on('close', err => {
+                resolve && resolve();
+            });
+            rl.on('error', err => {
+                fileStream.close();
+                reject && reject(new Error(`error when reading file  ${filename} due to => ${err.message}`));
             });
             return promise;
         });

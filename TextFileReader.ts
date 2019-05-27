@@ -88,14 +88,6 @@ class TextFileReader extends Step {
 
         try { fileStream = fs.createReadStream(filename, options) }
         catch (e) { this.error(`unable to open file to read ${filename} due to => ${e.message}`) }
-        fileStream.on('error', err => {
-            fileStream.close();
-            reject && reject(new Error(`error when reading file  ${filename} due to => ${err.message}`))
-        });
-        fileStream.on('end', err => {
-            fileStream.close()
-            resolve && resolve()
-        });
 
         const rl = readline.createInterface({
             input: fileStream,
@@ -109,6 +101,14 @@ class TextFileReader extends Step {
                 this.output('pojos', this.params.pojo)
             }
         });
+        rl.on('close', err => {
+            resolve && resolve()
+        });
+        rl.on('error', err => {
+            fileStream.close();
+            reject && reject(new Error(`error when reading file  ${filename} due to => ${err.message}`))
+        });
+
 
         return promise
     }

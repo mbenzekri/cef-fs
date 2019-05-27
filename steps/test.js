@@ -30,6 +30,7 @@ function removetree() {
     fs.existsSync('d:/tmp/b/c') && fs.rmdirSync('d:/tmp/b/c');
     fs.existsSync('d:/tmp/a') && fs.rmdirSync('d:/tmp/a');
     fs.existsSync('d:/tmp/b') && fs.rmdirSync('d:/tmp/b');
+    fs.existsSync('d:/tmp/tfw.txt') && fs.rmdirSync('d:/tmp/tfw.txt');
     fs.existsSync('d:/tmp') && fs.rmdirSync('d:/tmp');
 }
 removetree();
