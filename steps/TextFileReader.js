@@ -103,7 +103,8 @@ class TextFileReader extends steps_1.Step {
                 count++;
                 if (count > skip) {
                     this.locals.match = re.exec(line);
-                    this.output('pojos', this.params.pojo);
+                    rl.pause();
+                    this.output('pojos', this.params.pojo).then(() => rl.resume()).catch(e => reject(e));
                 }
             });
             rl.on('close', err => {

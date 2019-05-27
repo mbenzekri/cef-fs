@@ -98,7 +98,8 @@ class TextFileReader extends Step {
             count++
             if (count > skip) {
                 this.locals.match = (<RegExp>re).exec(line)
-                this.output('pojos', this.params.pojo)
+                rl.pause()
+                this.output('pojos', this.params.pojo).then(() => rl.resume() ).catch(e => reject(e))
             }
         });
         rl.on('close', err => {
@@ -108,7 +109,6 @@ class TextFileReader extends Step {
             fileStream.close();
             reject && reject(new Error(`error when reading file  ${filename} due to => ${err.message}`))
         });
-
 
         return promise
     }
