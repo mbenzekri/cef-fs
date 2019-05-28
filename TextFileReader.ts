@@ -1,6 +1,7 @@
 import { Step, Declaration, ParamsMap, EOP } from 'pojoe/steps'
 import * as fs from 'fs'
 import * as readline from 'readline'
+import { resolve } from 'path';
 
 
 const declaration: Declaration = {
@@ -56,6 +57,65 @@ const declaration: Declaration = {
     },
 }
 
+class LineFileReader {
+    private _eof = false
+    private _fileStream: fs.ReadStream
+    private _resolve : Function
+    private _reject : Function
+    private _rl: readline.Interface
+    private _fifo: string[] = []
+    private _error: any
+    constructor(filename:string, encoding:string) {
+        const options = { flags: 'r', encoding: encoding }
+        try {  
+            this._fileStream = fs.createReadStream(filename, options)
+        } catch (e) { this._error = e }
+        this._rl = readline.createInterface({
+            input: this._fileStream,
+            crlfDelay: Infinity
+        });
+
+        this._rl.on('line', (newline) => {
+            this._rl.pause()
+            this._fifo.push(newline)
+            if (this._resolve) {
+                const line = this._fifo.shift()
+                this._resolve(line)
+                this._resolve = null
+                this._reject = null
+            }
+        });
+        this._rl.on('close', () => {
+            this._eof = true
+        });
+        this._rl.on('error', err => {
+            // error may occur during a non pending Promise
+            this._fileStream.close();
+            this._error = err
+            if (this._reject) {
+                this._reject(this._error)
+                this._resolve = null
+                this._reject = null
+            } 
+        });
+    }
+    get eol() {return this._eof && this._fifo.length === 0 }
+    async next(): Promise<string> {
+        if (this._error) return Promise.reject(this._error)
+        if (this.eol) return Promise.reject(new Error('calling next after EOL (End Of Lines) !'))
+        return new Promise<string>((resolve,reject) => {
+            if (this._fifo.length) {
+                const line = this._fifo.shift()
+                resolve(line)
+            } else {
+                this._resolve = resolve
+                this._reject = reject
+                this._rl.resume()    
+            }
+        })
+    }
+}
+
 class TextFileReader extends Step {
     static readonly declaration = declaration
     constructor(params: ParamsMap) {
@@ -76,41 +136,15 @@ class TextFileReader extends Step {
         const skip = this.params.skip
         const encoding = this.params.encoding
 
-        const options = { flags: 'r', encoding: encoding }
-        let fileStream: fs.ReadStream
-        let resolve: (value?: void | PromiseLike<void>) => void
-        let reject: (reason?: any) => void
-
-        const promise = new Promise<void>((res, rej) => {
-            resolve = res
-            reject = rej
-        })
-
-        try { fileStream = fs.createReadStream(filename, options) }
-        catch (e) { this.error(`unable to open file to read ${filename} due to => ${e.message}`) }
-
-        const rl = readline.createInterface({
-            input: fileStream,
-            crlfDelay: Infinity
-        });
-
-        rl.on('line', (line) => {
+        const lfreader = new LineFileReader(filename, encoding)
+        while(!lfreader.eol) {
+            const line = await lfreader.next()
             count++
             if (count > skip) {
                 this.locals.match = (<RegExp>re).exec(line)
-                rl.pause()
-                this.output('pojos', this.params.pojo).then(() => rl.resume() ).catch(e => reject(e))
+                await this.output('pojos', this.params.pojo)
             }
-        });
-        rl.on('close', err => {
-            resolve && resolve()
-        });
-        rl.on('error', err => {
-            fileStream.close();
-            reject && reject(new Error(`error when reading file  ${filename} due to => ${err.message}`))
-        });
-
-        return promise
+        }
     }
 
     /**
