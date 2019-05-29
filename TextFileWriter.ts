@@ -1,7 +1,6 @@
 import { Step, Declaration, ParamsMap, EOP } from 'pojoe/steps'
 import * as path from 'path'
 import * as fs from 'fs'
-import { resolve } from 'url';
 
 const declaration: Declaration = {
     gitid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
@@ -67,9 +66,7 @@ const declaration: Declaration = {
 
 class TextFileWriter extends Step {
     static readonly declaration = declaration
-    private streams: { [key: string]: fs.WriteStream } = {}
-    private _lines:string[] = []
-    private _size = 0
+    streams: { [key: string]: fs.WriteStream } = {}
     constructor(params: ParamsMap) {
         super(declaration, params)
     }
@@ -116,17 +113,13 @@ class TextFileWriter extends Step {
             const textline = this.params.textline
             const separator = this.params.separator
             const stream = this.getstream(filename)
-            if (this._size + textline > 100000 ) {
-                const towrite = this._lines.join('')
-                this._lines = [textline, separator]
-                stream && stream.write(towrite, err => {
+            stream && stream.write(textline, err => {
+                err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`))
+                stream && stream.write(separator, err => {
                     err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`))
-                        resolve()
-                })        
-            } else {
-                this._lines.push(textline,separator)
-                resolve()
-            }
+                    resolve()
+                })
+            })    
         })
     }
 

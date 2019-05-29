@@ -76,8 +76,6 @@ class TextFileWriter extends steps_1.Step {
     constructor(params) {
         super(declaration, params);
         this.streams = {};
-        this._lines = [];
-        this._size = 0;
     }
     /**
      * manage a pool of streams for multiple opened files for output
@@ -124,18 +122,13 @@ class TextFileWriter extends steps_1.Step {
                 const textline = this.params.textline;
                 const separator = this.params.separator;
                 const stream = this.getstream(filename);
-                if (this._size + textline > 100000) {
-                    const towrite = this._lines.join('');
-                    this._lines = [textline, separator];
-                    stream && stream.write(towrite, err => {
+                stream && stream.write(textline, err => {
+                    err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`));
+                    stream && stream.write(separator, err => {
                         err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`));
                         resolve();
                     });
-                }
-                else {
-                    this._lines.push(textline, separator);
-                    resolve();
-                }
+                });
             });
         });
     }
