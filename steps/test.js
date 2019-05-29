@@ -109,7 +109,7 @@ const tests = [
     },
     {
         stepid: 'mbenzekri/pojoe-fs/steps/TextFileWriter',
-        title: 'TextFileWriter 3 pojos',
+        title: 'TextFileWriter 2 pojos',
         params: {
             filename: 'd:\\tmp\\tfw.txt',
             createdir: 'true',

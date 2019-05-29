@@ -67,7 +67,9 @@ const declaration: Declaration = {
 
 class TextFileWriter extends Step {
     static readonly declaration = declaration
-    streams: { [key: string]: fs.WriteStream } = {}
+    private streams: { [key: string]: fs.WriteStream } = {}
+    private _lines:string[] = []
+    private _size = 0
     constructor(params: ParamsMap) {
         super(declaration, params)
     }
@@ -114,13 +116,17 @@ class TextFileWriter extends Step {
             const textline = this.params.textline
             const separator = this.params.separator
             const stream = this.getstream(filename)
-            stream && stream.write(textline, err => {
-                err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`))
-                stream && stream.write(separator, err => {
+            if (this._size + textline > 100000 ) {
+                const towrite = this._lines.join('')
+                this._lines = [textline, separator]
+                stream && stream.write(towrite, err => {
                     err && reject(new Error(`unable to write to file ${filename} due to => ${err.message}`))
-                    resolve()
-                })
-            })    
+                        resolve()
+                })        
+            } else {
+                this._lines.push(textline,separator)
+                resolve()
+            }
         })
     }
 
