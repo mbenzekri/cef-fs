@@ -1,7 +1,6 @@
-import { Step, Declaration, ParamsMap, EOP } from 'pojoe/steps'
+import { Step, Declaration, ParamsMap } from 'pojoe/steps'
 import * as fs from 'fs'
 import * as readline from 'readline'
-import { resolve } from 'path';
 
 
 const declaration: Declaration = {
