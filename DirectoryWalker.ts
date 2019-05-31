@@ -1,4 +1,5 @@
 import { Declaration, Step, ParamsMap } from 'pojoe/steps'
+import { walk } from './tools'
 import * as path from 'path'
 import * as fs from 'fs'
 
@@ -72,33 +73,18 @@ export class DirectoryWalker extends Step {
         super(declaration, params)
     }
 
-    /**
-     * walk recursively a directory and output files mattching pattern and in extension list
-     * @param {string} dir : the directory to walk
-     * @param {RegExp} pattern : the pattern filter
-     * @param {RegExp} extension : the extension list filter 
-     */
-    async walk(dir: string, filter: RegExp, recursive: boolean, outdirs: boolean, outfiles: boolean) {
-        const dirs = fs.readdirSync(dir)
-        for (let item of dirs) {
-            const pathname = path.join(dir, item);
-            const isdir = fs.statSync(pathname).isDirectory()
-            const isfile = fs.statSync(pathname).isFile()
-            // avoid unix special files 
-            if (isfile || isdir) { 
-                isfile && outfiles && filter.test(pathname) && await this.output('files', { pathname, isdir, isfile })
-                isdir && outdirs && filter.test(pathname) && await this.output('files', { pathname, isdir, isfile })
-                if (isdir && recursive) await this.walk(pathname, filter, recursive, outdirs, outfiles)
-            }
-        }
-    }
     async process() {
         const directory = this.params.directory
         const filter = this.params.pattern
         const recursive = this.params.recursive
         const outdirs = this.params.outdirs
         const outfiles = this.params.outfiles
-        return await this.walk(directory, filter, recursive, outdirs, outfiles)
+        await walk(directory, recursive, stats => {
+            if (!filter.test(stats.pathname)) return Promise.resolve()
+            if (stats.isfile && !outfiles) return Promise.resolve()
+            if (stats.isdir && !outdirs) return Promise.resolve()
+            return this.output('files', { pathname: stats.pathname, isdir: stats.isdir, isfile:stats.isfile })
+        })
     }
 }
 

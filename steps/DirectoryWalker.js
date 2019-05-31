@@ -9,8 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const steps_1 = require("pojoe/steps");
-const path = require("path");
-const fs = require("fs");
+const tools_1 = require("./tools");
 const declaration = {
     gitid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',
     title: 'directory tree recursive walk',
@@ -77,29 +76,6 @@ class DirectoryWalker extends steps_1.Step {
     constructor(params) {
         super(declaration, params);
     }
-    /**
-     * walk recursively a directory and output files mattching pattern and in extension list
-     * @param {string} dir : the directory to walk
-     * @param {RegExp} pattern : the pattern filter
-     * @param {RegExp} extension : the extension list filter
-     */
-    walk(dir, filter, recursive, outdirs, outfiles) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dirs = fs.readdirSync(dir);
-            for (let item of dirs) {
-                const pathname = path.join(dir, item);
-                const isdir = fs.statSync(pathname).isDirectory();
-                const isfile = fs.statSync(pathname).isFile();
-                // avoid unix special files 
-                if (isfile || isdir) {
-                    isfile && outfiles && filter.test(pathname) && (yield this.output('files', { pathname, isdir, isfile }));
-                    isdir && outdirs && filter.test(pathname) && (yield this.output('files', { pathname, isdir, isfile }));
-                    if (isdir && recursive)
-                        yield this.walk(pathname, filter, recursive, outdirs, outfiles);
-                }
-            }
-        });
-    }
     process() {
         return __awaiter(this, void 0, void 0, function* () {
             const directory = this.params.directory;
@@ -107,7 +83,15 @@ class DirectoryWalker extends steps_1.Step {
             const recursive = this.params.recursive;
             const outdirs = this.params.outdirs;
             const outfiles = this.params.outfiles;
-            return yield this.walk(directory, filter, recursive, outdirs, outfiles);
+            yield tools_1.walk(directory, recursive, stats => {
+                if (!filter.test(stats.pathname))
+                    return Promise.resolve();
+                if (stats.isfile && !outfiles)
+                    return Promise.resolve();
+                if (stats.isdir && !outdirs)
+                    return Promise.resolve();
+                return this.output('files', { pathname: stats.pathname, isdir: stats.isdir, isfile: stats.isfile });
+            });
         });
     }
 }
