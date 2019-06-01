@@ -71,4 +71,15 @@ async function rmdir(dirname: string) {
     })    
 }
 
-export { walk, remove, rmdir }
+async function copy(source: string,target: string,exclusive: boolean) {
+    return new Promise<any>((resolve,reject) => {
+        const flags = exclusive ? fs.constants.COPYFILE_EXCL : 0
+        fs.copyFile(source,target, flags , err => { 
+           if (err) reject(err)
+           if (!err) resolve()
+       })
+    })
+}
+
+
+export { walk, remove, rmdir, copy }

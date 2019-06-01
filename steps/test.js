@@ -8,6 +8,7 @@ require("./TextFileWriter");
 require("./TextFileReader");
 require("./FileRemover");
 require("./DirectoryRemover");
+require("./FileCopier");
 const fs = require("fs");
 function createtree() {
     // create folowwing dir tree
@@ -29,6 +30,7 @@ function removetree() {
     fs.existsSync('d:/tmp/tfw.txt') && fs.unlinkSync('d:/tmp/tfw.txt');
     fs.existsSync('d:/tmp/a/a.txt') && fs.unlinkSync('d:/tmp/a/a.txt');
     fs.existsSync('d:/tmp/b/b.txt') && fs.unlinkSync('d:/tmp/b/b.txt');
+    fs.existsSync('d:/tmp/b/b2.txt') && fs.unlinkSync('d:/tmp/b/b2.txt');
     fs.existsSync('d:/tmp/b/c/c.txt') && fs.unlinkSync('d:/tmp/b/c/c.txt');
     fs.existsSync('d:/tmp/b/c') && fs.rmdirSync('d:/tmp/b/c');
     fs.existsSync('d:/tmp/a') && fs.rmdirSync('d:/tmp/a');
@@ -246,6 +248,35 @@ const tests = [
             setTimeout(() => directorywatcher.stopwatch(), 3000);
         },
         onend: removetree
+    },
+    {
+        stepid: 'mbenzekri/pojoe-fs/steps/FileCopier',
+        title: 'FileCopier copy one file target not exists / copy one file target exists',
+        params: {
+            source: '${pojo.source}',
+            target: '${pojo.target}',
+            exclusive: 'true',
+        },
+        injected: {
+            copy: [
+                { source: "d:\\tmp\\a\\a.txt", target: "d:\\tmp\\b\\b2.txt" },
+                { source: "d:\\tmp\\b\\c\\c.txt", target: "d:\\tmp\\b\\b.txt" },
+            ],
+        },
+        expected: {
+            copied: [
+                { source: "d:\\tmp\\a\\a.txt", target: "d:\\tmp\\b\\b2.txt" },
+            ],
+            failed: [
+                { source: "d:\\tmp\\b\\c\\c.txt", target: "d:\\tmp\\b\\b.txt", reason: "EEXIST: file already exists, copyfile 'd:\\tmp\\b\\c\\c.txt' -> 'd:\\tmp\\b\\b.txt'" },
+            ],
+        },
+        onstart: createtree,
+        onend: (step) => {
+            if (!fs.existsSync("d:\\tmp\\b\\b2.txt"))
+                step.error(`onend(): file not copied ${"d:\\tmp\\b\\b2.txt"}`);
+            removetree();
+        }
     },
 ];
 steps_1.Testbed.run(tests);

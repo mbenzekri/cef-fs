@@ -96,4 +96,18 @@ function rmdir(dirname) {
     });
 }
 exports.rmdir = rmdir;
+function copy(source, target, exclusive) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            const flags = exclusive ? fs.constants.COPYFILE_EXCL : 0;
+            fs.copyFile(source, target, flags, err => {
+                if (err)
+                    reject(err);
+                if (!err)
+                    resolve();
+            });
+        });
+    });
+}
+exports.copy = copy;
 //# sourceMappingURL=tools.js.map

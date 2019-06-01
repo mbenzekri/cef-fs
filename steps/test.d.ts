@@ -4,3 +4,4 @@ import './TextFileWriter';
 import './TextFileReader';
 import './FileRemover';
 import './DirectoryRemover';
+import './FileCopier';
