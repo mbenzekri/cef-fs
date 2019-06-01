@@ -9,7 +9,10 @@
             "DirectoryWalker",
             "DirectoryWatcher",
             "TextFileWriter",
-            "TextFileReader"
+            "TextFileReader",
+            "FileRemover",
+            "DirectoryRemover",
+            "FileCopier"
         ]
     },
     "scripts": {

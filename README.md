@@ -10,6 +10,9 @@
 >- [DirectoryWatcher](#directorywatcher-directory-change-watcher-step) : directory change watcher step
 >- [TextFileWriter](#textfilewriter-write-data-from-pojos-to-a-file) : write data from pojos to a file
 >- [TextFileReader](#textfilereader-reads-data-from-a-file) : reads data from a file
+>- [FileRemover](#fileremover-remove-files) : remove files
+>- [DirectoryRemover](#directoryremover-remove-directories) : remove directories
+>- [FileCopier](#filecopier-copy-files) : copy files
 # DirectoryWalker directory tree recursive walk
 >
 
@@ -170,6 +173,122 @@
 
 ## outputs
 >- **pojos** -- pojos read from files 
+
+
+---
+
+# FileRemover remove files
+>
+
+## goal
+
+>this step remove inputed files
+
+---
+## parameters
+> **filename** *{string}* -- file pathname to remove  -- default = `/tmp/temp.txt`
+> 
+>| Value | Description | 
+>|-------|-------------| 
+>|`c:/tmp/temp.txt`| set parameter directory to a constant |
+>|`${args.my_param_name}`| use a process parameter to set directory |
+>|`${globs.my_glob_name}`| use a step global variable to set directory |
+>|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
+>|`${pojo.dirname}/tmp.txt`| use an inputed pojo property "dirname" from port "filesdirs"  |
+> **pattern** *{regexp}* -- full pathname regexp filter  -- default = `/.*/i`
+> 
+>| Value | Description | 
+>|-------|-------------| 
+>|`/.*/i`| select all files |
+>|`/[.](doc\|pdf)$/i`| doc and pdf files |
+>|`/^d:/i`| only starting with "d:" |
+>|`/^${args.root}//i`| only starting with process argument "root" |
+## inputs
+>- **files** -- pojos from which the files pathnames will be extracted 
+
+## outputs
+>- **removed** -- files removed successfully 
+>> provided properties: 
+>>- **filename** *{string}* -- path name of the file removed
+>- **failed** -- files failed to remove 
+>> provided properties: 
+>>- **filename** *{string}* -- path name of the file failed to remove
+>>- **reason** *{string}* -- reason of the failure
+
+
+---
+
+# DirectoryRemover remove directories
+>
+
+## goal
+
+>this step remove inputed directories
+
+---
+## parameters
+> **dirname** *{string}* -- directory pathname to remove  -- default = `/tmp/temp.txt`
+> 
+>| Value | Description | 
+>|-------|-------------| 
+>|`c:/tmp`| set parameter directory to a constant |
+>|`${args.my_param_name}`| use a process parameter to set directory |
+>|`${globs.my_glob_name}`| use a step global variable to set directory |
+>|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
+>|`${pojo.dirname}`| use an inputed pojo property "dirname" from port "filesdirs"  |
+> **pattern** *{regexp}* -- full pathname regexp filter  -- default = `/.*/i`
+> 
+>| Value | Description | 
+>|-------|-------------| 
+>|`/.*/i`| select all files/directory |
+>|`/[.](doc\|pdf)$/i`| doc and pdf files |
+>|`/^d:/i`| only starting with "d:" |
+>|`/^${args.root}//i`| only starting with process argument "root" |
+> **recursive** *{boolean}* -- if true do a recursive remove on directories  -- default = `false`
+> 
+## inputs
+>- **directories** -- pojos from which the directories pathnames will be extracted 
+
+## outputs
+>- **removed** -- directory removed successfully 
+>> provided properties: 
+>>- **dirname** *{string}* -- path name of the directory removed
+>- **failed** -- directories failed to remove 
+>> provided properties: 
+>>- **dirname** *{string}* -- path name of the directory failed to remove
+>>- **reason** *{string}* -- reason of the failure
+
+
+---
+
+# FileCopier copy files
+>
+
+## goal
+
+>this step copy a source file to destination files
+
+---
+## parameters
+> **source** *{string}* -- file pathname to copy  -- default = `/tmp/temp1.txt`
+> 
+> **target** *{string}* -- file pathname to copy  -- default = `/tmp/temp2.txt`
+> 
+> **exclusive** *{string}* -- true to ignore existing targets  -- default = `/tmp/temp2.txt`
+> 
+## inputs
+>- **copy** -- pojos from which the source file and the destination file  pathnames will be extracted 
+
+## outputs
+>- **copied** -- files to copied successfully 
+>> provided properties: 
+>>- **source** *{string}* -- path name of the file to copy
+>>- **target** *{string}* -- target path file name
+>- **failed** -- files failed to copy 
+>> provided properties: 
+>>- **source** *{string}* -- path name of the file to copy
+>>- **target** *{string}* -- target path file name
+>>- **reason** *{string}* -- reason of the failure
 
 
 ---
