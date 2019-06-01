@@ -69,7 +69,7 @@
 
 ---
 ## parameters
-> **directory** *{string}* -- the directory to watch for changes  -- default = `c:/tmp`
+> **directory** *{string}* -- the directory to watch for changes  -- default = `/tmp`
 > 
 >| Value | Description | 
 >|-------|-------------| 
@@ -77,7 +77,7 @@
 >|`${args.my_param_name}`| use a process parameter to set directory |
 >|`${globs.my_glob_name}`| use a step global variable to set directory |
 >|`${args.root}/${globs.prefix}_suffix}`| use mixed variables |
-> **pattern** *{regexp}* -- full pathname regexp filter  -- default = `.*`
+> **pattern** *{regexp}* -- full pathname regexp filter  -- default = `/.*/i`
 > 
 >| Value | Description | 
 >|-------|-------------| 

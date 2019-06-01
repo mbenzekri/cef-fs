@@ -70,4 +70,30 @@ function walk(pathname, recursive, cbpojo) {
     });
 }
 exports.walk = walk;
+function remove(filename) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            fs.unlink(filename, err => {
+                if (err)
+                    reject(err);
+                if (!err)
+                    resolve();
+            });
+        });
+    });
+}
+exports.remove = remove;
+function rmdir(dirname) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            fs.rmdir(dirname, err => {
+                if (err)
+                    reject(err);
+                if (!err)
+                    resolve();
+            });
+        });
+    });
+}
+exports.rmdir = rmdir;
 //# sourceMappingURL=tools.js.map

@@ -1,7 +1,5 @@
 import { Declaration, Step, ParamsMap } from 'pojoe/steps'
 import { walk } from './tools'
-import * as path from 'path'
-import * as fs from 'fs'
 
 const declaration: Declaration = {
     gitid: 'mbenzekri/pojoe-fs/steps/DirectoryWalker',

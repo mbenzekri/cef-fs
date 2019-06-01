@@ -36,7 +36,7 @@ const declaration = {
         'directory': {
             title: 'the directory to watch for changes',
             type: 'string',
-            default: 'c:/tmp',
+            default: '/tmp',
             examples: [
                 { value: 'c:/tmp', title: 'set parameter directory to a constant' },
                 { value: '$\{args.my_param_name}', title: 'use a process parameter to set directory' },
@@ -47,7 +47,7 @@ const declaration = {
         'pattern': {
             title: 'full pathname regexp filter',
             type: 'regexp',
-            default: '.*',
+            default: '/.*/i',
             examples: [
                 { value: '[.](doc\\|docx)$', title: 'select only doc and docx changes' },
                 { value: '^[^C]:', title: 'avoid "C:" starting paths ' },
@@ -114,7 +114,7 @@ class DirectoryWatcher extends steps_1.Step {
             });
         });
     }
-    kill() {
+    stopwatch() {
         this.debug(`Ending DirectoryWatcher over directory :${this.directory}`);
         this.watcher && this.watcher.close();
         this.resolve && this.resolve();

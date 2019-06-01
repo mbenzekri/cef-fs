@@ -53,5 +53,22 @@ async function walk(pathname: string, recursive: boolean, cbpojo: (stats: any) =
     return new Promise(treewalk)
 }
 
+async function remove(filename: string) {
+    return new Promise<any>((resolve,reject) => {
+        fs.unlink(filename, err => { 
+           if (err) reject(err)
+           if (!err) resolve()
+       })
+    })    
+}
 
-export { walk }
+async function rmdir(dirname: string) {
+    return new Promise<any>((resolve,reject) => {
+        fs.rmdir(dirname, err => { 
+           if (err) reject(err)
+           if (!err) resolve()
+       })
+    })    
+}
+
+export { walk, remove, rmdir }
