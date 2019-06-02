@@ -274,13 +274,13 @@
 > 
 > **target** *{string}* -- file pathname to copy  -- default = `/tmp/temp2.txt`
 > 
-> **exclusive** *{string}* -- true to ignore existing targets  -- default = `/tmp/temp2.txt`
+> **exclusive** *{boolean}* -- true to ignore existing targets  -- default = `false`
 > 
 ## inputs
 >- **copy** -- pojos from which the source file and the destination file  pathnames will be extracted 
 
 ## outputs
->- **copied** -- files to copied successfully 
+>- **copied** -- files copied successfully 
 >> provided properties: 
 >>- **source** *{string}* -- path name of the file to copy
 >>- **target** *{string}* -- target path file name

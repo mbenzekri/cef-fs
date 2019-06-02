@@ -18,9 +18,9 @@
     "scripts": {
         "build": "tsc",
         "predoc": "tsc",
-        "doc": "node ./node_modules/pojoe/steps/docgen.js",
+        "doc": "node ./node_modules/pojoe/steps/pojoedoc",
         "pretest": "npm run doc",
-        "test": "node ./steps/test.js"
+        "test": "node ./node_modules/pojoe/steps/pojoetest"
     },
     "repository": {
         "type": "git",

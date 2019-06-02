@@ -94,5 +94,5 @@ class FileRemover extends steps_1.Step {
 }
 FileRemover.declaration = declaration;
 exports.FileRemover = FileRemover;
-steps_1.Step.register(FileRemover);
+module.exports = steps_1.Step.register(FileRemover);
 //# sourceMappingURL=FileRemover.js.map

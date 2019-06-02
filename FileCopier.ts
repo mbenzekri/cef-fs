@@ -12,7 +12,7 @@ const declaration: Declaration = {
     },
     outputs: {
         'copied': {
-            title: 'files to copied successfully',
+            title: 'files copied successfully',
             properties : {
                 "source": { type: 'string', title: 'path name of the file to copy' },
                 "target": { type: 'string', title: 'target path file name' },
@@ -40,8 +40,8 @@ const declaration: Declaration = {
         },
         'exclusive': {
             title: 'true to ignore existing targets',
-            type: 'string',
-            default: '/tmp/temp2.txt',
+            type: 'boolean',
+            default: 'false',
         },
     }
 }

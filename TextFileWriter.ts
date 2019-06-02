@@ -153,4 +153,4 @@ class TextFileWriter extends Step {
 
 }
 
-Step.register(TextFileWriter)
+module.exports = Step.register(TextFileWriter)

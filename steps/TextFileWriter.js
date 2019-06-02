@@ -166,5 +166,5 @@ class TextFileWriter extends steps_1.Step {
     }
 }
 TextFileWriter.declaration = declaration;
-steps_1.Step.register(TextFileWriter);
+module.exports = steps_1.Step.register(TextFileWriter);
 //# sourceMappingURL=TextFileWriter.js.map

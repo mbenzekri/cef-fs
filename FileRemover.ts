@@ -79,4 +79,4 @@ export class FileRemover extends Step {
     }
 }
 
-Step.register(FileRemover)
+module.exports = Step.register(FileRemover)
