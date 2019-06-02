@@ -8,4 +8,5 @@ declare function walk(pathname: string, recursive: boolean, cbpojo: (stats: any)
 declare function remove(filename: string): Promise<any>;
 declare function rmdir(dirname: string): Promise<any>;
 declare function copy(source: string, target: string, exclusive: boolean): Promise<any>;
-export { walk, remove, rmdir, copy };
+declare function rename(source: string, target: string, exclusive: boolean): Promise<any>;
+export { walk, remove, rmdir, copy, rename };

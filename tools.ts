@@ -81,5 +81,14 @@ async function copy(source: string,target: string,exclusive: boolean) {
     })
 }
 
+async function rename(source: string,target: string,exclusive: boolean) {
+    return new Promise<any>((resolve,reject) => {
+        if (exclusive && fs.existsSync(target)) throw new Error(`unable to rename file "${source}" target file "${target}" exists`)
+        fs.rename(source,target, err => { 
+           if (err) reject(err)
+           if (!err) resolve()
+       })
+    })
+}
 
-export { walk, remove, rmdir, copy }
+export { walk, remove, rmdir, copy, rename }

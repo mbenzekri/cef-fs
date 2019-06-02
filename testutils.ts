@@ -25,6 +25,7 @@ export function removetree() {
     fs.existsSync('d:/tmp/b/b.txt') && fs.unlinkSync('d:/tmp/b/b.txt')
     fs.existsSync('d:/tmp/b/b2.txt') && fs.unlinkSync('d:/tmp/b/b2.txt')
     fs.existsSync('d:/tmp/b/c/c.txt') && fs.unlinkSync('d:/tmp/b/c/c.txt')
+    fs.existsSync('d:/tmp/b/c/c1.txt') && fs.unlinkSync('d:/tmp/b/c/c1.txt')
 
     fs.existsSync('d:/tmp/b/c') && fs.rmdirSync('d:/tmp/b/c')
     fs.existsSync('d:/tmp/a') && fs.rmdirSync('d:/tmp/a')

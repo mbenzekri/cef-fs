@@ -13,6 +13,7 @@
 >- [FileRemover](#fileremover-remove-files) : remove files
 >- [DirectoryRemover](#directoryremover-remove-directories) : remove directories
 >- [FileCopier](#filecopier-copy-files) : copy files
+>- [FileRenamer](#filerenamer-rename-files) : rename files
 # DirectoryWalker directory tree recursive walk
 >
 
@@ -287,6 +288,38 @@
 >- **failed** -- files failed to copy 
 >> provided properties: 
 >>- **source** *{string}* -- path name of the file to copy
+>>- **target** *{string}* -- target path file name
+>>- **reason** *{string}* -- reason of the failure
+
+
+---
+
+# FileRenamer rename files
+>
+
+## goal
+
+>this step rename a source file to target files
+
+---
+## parameters
+> **source** *{string}* -- file pathname to rename  -- default = `/tmp/temp1.txt`
+> 
+> **target** *{string}* -- target file pathname  -- default = `/tmp/temp2.txt`
+> 
+> **exclusive** *{boolean}* -- false to ignore existing targets  -- default = `true`
+> 
+## inputs
+>- **rename** -- pojos from which the source file and the target file pathnames will be extracted 
+
+## outputs
+>- **renamed** -- files renamed successfully 
+>> provided properties: 
+>>- **source** *{string}* -- path name of the file to rename
+>>- **target** *{string}* -- target path file name
+>- **failed** -- files failed to rename 
+>> provided properties: 
+>>- **source** *{string}* -- path name of the file to rename
 >>- **target** *{string}* -- target path file name
 >>- **reason** *{string}* -- reason of the failure
 

@@ -110,4 +110,19 @@ function copy(source, target, exclusive) {
     });
 }
 exports.copy = copy;
+function rename(source, target, exclusive) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            if (exclusive && fs.existsSync(target))
+                throw new Error(`unable to rename file "${source}" target file "${target}" exists`);
+            fs.rename(source, target, err => {
+                if (err)
+                    reject(err);
+                if (!err)
+                    resolve();
+            });
+        });
+    });
+}
+exports.rename = rename;
 //# sourceMappingURL=tools.js.map

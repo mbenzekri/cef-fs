@@ -12,7 +12,8 @@
             "TextFileReader",
             "FileRemover",
             "DirectoryRemover",
-            "FileCopier"
+            "FileCopier",
+            "FileRenamer"
         ]
     },
     "scripts": {
