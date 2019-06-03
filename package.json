@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "title": "file system steps",
     "description": "this module provides steps for files and directories management",
-    "main": "./steps/tests.js",
+    "main": "./node_modules/pojoe/steps/pojoetest.js",
     "config": {
         "steps": [
             "DirectoryWalker",
